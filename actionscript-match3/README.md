@@ -24,6 +24,23 @@ This is an Actionscript open-source game which was designed to shows how to impl
 ### Demo
 + **[Actionscript](https://ronaldosetzer.github.io/portfolio/open_source/match3/)**
 
+* * *
+
+### Game
+
+![screenshot01](img_ss_match3_01.png)
+
+![screenshot02](img_ss_match3_02.png)
+
+![screenshot03](img_ss_match3_03.png)
+
+#### Views - Mediators - Managers - Models - Utils - Commands - Tests
+
+![screenshot05](img_ss_match3_05.png)
+
+![screenshot04](img_ss_match3_04.png)
+
+* * *
 
 ### Screenshots
 ![screenshot01](img_game_match3.png)

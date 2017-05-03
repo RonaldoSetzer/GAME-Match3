@@ -39,7 +39,7 @@ package setzer.matchthree.game.utils
 			return new PieceData( col, row, type, pieceId );
 		}
 
-		public static function getNewPowerByChainLenght( chainLength:int, piece:PieceData, direction:String = "random" ):PieceData
+		public static function getNewPowerByChainLength( chainLength:int, piece:PieceData, direction:String = "random" ):PieceData
 		{
 			var pieceId:int;
 			var pieceType:String;
@@ -65,7 +65,7 @@ package setzer.matchthree.game.utils
 			return new PieceData( piece.col, piece.row, pieceType, pieceId );
 		}
 
-		public static function removePieceFromArrays( piece:PieceData, pieces:Vector.<PieceData> ):void
+		public static function removePieceFromListOfPieces( piece:PieceData, pieces:Vector.<PieceData> ):void
 		{
 			var index:int = pieces.indexOf( piece );
 			if ( index > -1 ) pieces.splice( index, 1 );

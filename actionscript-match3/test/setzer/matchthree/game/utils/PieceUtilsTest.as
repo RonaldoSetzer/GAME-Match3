@@ -55,6 +55,35 @@ package setzer.matchthree.game.utils
 		}
 
 		[Test]
+		public function testGetNewPowerByChainLengthThree():void
+		{
+			var normalPiece:PieceData = PieceUtils.getNewPowerByChainLength( 3, PieceUtils.getNewNormalPiece( 0, 0 ) );
+			var powerUpColRow:PieceData = PieceUtils.getNewPowerByChainLength( 4, PieceUtils.getNewNormalPiece( 0, 0, PieceIds.YELLOW ) );
+			var powerUpRainbow:PieceData = PieceUtils.getNewPowerByChainLength( 5, PieceUtils.getNewNormalPiece( 0, 0, PieceIds.GREEN ) );
+
+			Assert.assertNull( normalPiece );
+			Assert.assertNotNull( powerUpColRow );
+			Assert.assertNotNull( powerUpRainbow );
+
+			Assert.assertTrue( (powerUpColRow.pieceType == PieceType.COL || powerUpColRow.pieceType == PieceType.ROW) );
+			Assert.assertTrue( PieceType.RAINBOW, powerUpRainbow.pieceType );
+
+			Assert.assertEquals( PieceIds.YELLOW, powerUpColRow.pieceId );
+			Assert.assertEquals( PieceIds.RAINBOW, powerUpRainbow.pieceId );
+		}
+
+		[Test]
+		public function testRemovePieceFromListsOfPieces():void
+		{
+			var piece:PieceData = new PieceData();
+			var pieces:Vector.<PieceData> = new <PieceData>[piece];
+
+			PieceUtils.removePieceFromListOfPieces( piece, pieces );
+
+			Assert.assertEquals( 0, pieces.length );
+		}
+
+		[Test]
 		public function testIsAdjacentHorizontalTrue():void
 		{
 			var piece1:PieceData = new PieceData( 1, 1 );
@@ -130,17 +159,6 @@ package setzer.matchthree.game.utils
 			}
 
 			Assert.assertFalse( PieceUtils.IsAdjacent( piece1, piece2 ) );
-		}
-
-		[Test]
-		public function testRemovePiece():void
-		{
-			var piece:PieceData = new PieceData();
-			var pieces:Vector.<PieceData> = new <PieceData>[piece];
-
-			PieceUtils.removePieceFromArrays( piece, pieces );
-
-			Assert.assertEquals( 0, pieces.length );
 		}
 	}
 }

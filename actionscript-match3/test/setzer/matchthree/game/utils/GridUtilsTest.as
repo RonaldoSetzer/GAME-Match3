@@ -192,10 +192,10 @@ package setzer.matchthree.game.utils
 				[2, 3, 1, 2, 3, 6, 2, 3],//4
 				[3, 1, 2, 5, 5, 5, 5, 2],//5
 				[1, 2, 3, 1, 2, 3, 1, 2],//6
-				[2, 3, 1, 2, 3, 1, 2, 3],//7
+				[2, 3, 1, 2, 3, 1, 2, 3]//7
 			];
 
-			GridUtils.generate( grid, map );
+			GridUtils.generateByMap( grid, map );
 
 			Assert.assertEquals( 5, GridUtils.getAllChains( grid ).length );
 		}
@@ -260,7 +260,7 @@ package setzer.matchthree.game.utils
 				[2, 3, 1, 2, 3, 6, 6, 6]//7
 			];
 
-			GridUtils.generate( grid, map );
+			GridUtils.generateByMap( grid, map );
 
 			Assert.assertEquals( 4, GridUtils.getChainWithPiece( grid, grid.getPiece( 1, 0 ) ).length );
 			Assert.assertEquals( 8, GridUtils.getChainWithPiece( grid, grid.getPiece( 3, 3 ) ).length );
@@ -282,8 +282,8 @@ package setzer.matchthree.game.utils
 			var resultLine1:Boolean = true;
 			var resultLine2:Boolean = true;
 
-			var line1:Vector.<PieceData> = GridUtils.spawnNewLine( grid, 0 );
-			var line2:Vector.<PieceData> = GridUtils.spawnNewLine( grid, 3 );
+			var line1Length:int = GridUtils.spawnNewRow( grid, 0 ).length;
+			var line2Length:int = GridUtils.spawnNewRow( grid, 3 ).length;
 
 			for ( var col:int = 0; col < grid.maxCols; col++ )
 			{
@@ -291,10 +291,57 @@ package setzer.matchthree.game.utils
 				resultLine2 &&= (grid.getPiece( col, 3 ).pieceType == PieceType.NORMAL);
 			}
 
-			Assert.assertEquals( grid.maxCols, line1.length );
-			Assert.assertEquals( grid.maxCols, line2.length );
+			Assert.assertEquals( grid.maxCols, line1Length );
+			Assert.assertEquals( grid.maxCols, line2Length );
 			Assert.assertTrue( resultLine1 );
 			Assert.assertTrue( resultLine2 );
+		}
+
+		[Test]
+		public function testGenerateByMap():void
+		{
+			var isIdCorrect:Boolean = true;
+			var map:Array = [//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2],//
+				[1, 2, 3, 4, 5, 6, 1, 2]//
+			];
+
+			GridUtils.generateByMap( grid, map );
+
+			var pieces:Vector.<PieceData> = GridUtils.getAllPieces( grid );
+			var piece:PieceData;
+
+			for ( var i:int = 0; i < pieces.length; i++ )
+			{
+				piece = pieces[i];
+				isIdCorrect &&= (piece.pieceId == map[piece.row][piece.col]);
+			}
+			Assert.assertTrue( isIdCorrect );
+		}
+
+		[Test]
+		public function testSpawnNewRow():void
+		{
+			var row:int = 3;
+			var isRow:Boolean = true;
+			var isNotEmpty:Boolean = true;
+			var pieces:Vector.<PieceData> = GridUtils.spawnNewRow( grid, row );
+
+			var piece:PieceData;
+			for ( var i:int = 0; i < pieces.length; i++ )
+			{
+				piece = pieces[i];
+				isRow &&= (piece.row == row);
+				isNotEmpty &&= (piece.pieceType != PieceType.EMPTY);
+			}
+			Assert.assertTrue( isRow );
+			Assert.assertTrue( isNotEmpty );
 		}
 	}
 }

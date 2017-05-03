@@ -39,14 +39,14 @@ package setzer.matchthree.game.managers
 			//SWAP
 			if ( swapModel.status == SwapModel.SWAP || swapModel.status == SwapModel.ROLLBACK )
 			{
-				swapModel.udpateStatus();
+				swapModel.updateStatus();
 				swapSelectedPieces();
 
 				return;
 
 			} else if ( swapModel.status == SwapModel.VALIDATE )
 			{
-				swapModel.udpateStatus();
+				swapModel.updateStatus();
 				validateSwap();
 
 				return;
@@ -123,6 +123,7 @@ package setzer.matchthree.game.managers
 		public function removeAllChains( chains:Vector.<Vector.<PieceData>> = null ):Boolean
 		{
 			chains ||= GridUtils.getAllChains( grid );
+			var willRemoveSomething:Boolean = chains.length;
 
 			var rndIndex:Number;
 			var powerUp:PieceData;
@@ -133,7 +134,7 @@ package setzer.matchthree.game.managers
 				if ( chains[i].length > 3 )
 				{
 					rndIndex = Math.floor( Math.random() * chains[i].length );
-					powerUp = PieceUtils.getNewPowerByChainLenght( chains[i].length, chains[i][rndIndex] );
+					powerUp = PieceUtils.getNewPowerByChainLength( chains[i].length, chains[i][rndIndex] );
 					if ( powerUp ) toAdd.push( powerUp );
 				}
 				removePiecesInList( chains[i] );
@@ -145,7 +146,7 @@ package setzer.matchthree.game.managers
 
 			gameService.updateHUDData();
 
-			return chains.length;
+			return willRemoveSomething;
 		}
 
 		public function removePiecesInList( piecesToRemove:Vector.<PieceData> ):void
@@ -200,7 +201,7 @@ package setzer.matchthree.game.managers
 		public function createNewPiecesAbove():void
 		{
 			var topLine:int = 0;
-			var pieces:Vector.<PieceData> = GridUtils.spawnNewLine( grid, topLine );
+			var pieces:Vector.<PieceData> = GridUtils.spawnNewRow( grid, topLine );
 
 			for ( var i:int = 0; i < pieces.length; i++ )
 			{

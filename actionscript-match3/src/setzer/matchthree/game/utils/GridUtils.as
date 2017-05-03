@@ -5,7 +5,7 @@ package setzer.matchthree.game.utils
 
 	public class GridUtils
 	{
-		public static function generate( grid:GridData, map:Array ):void
+		public static function generateByMap( grid:GridData, map:Array ):void
 		{
 			for ( var row:int = 0; row < grid.maxRows; row++ )
 			{
@@ -16,7 +16,7 @@ package setzer.matchthree.game.utils
 			}
 		}
 
-		public static function spawnNewLine( grid:GridData, row:int, pieceId:int = 0 ):Vector.<PieceData>
+		public static function spawnNewRow( grid:GridData, row:int ):Vector.<PieceData>
 		{
 			var pieces:Vector.<PieceData> = new Vector.<PieceData>();
 			var piece:PieceData;
@@ -27,7 +27,7 @@ package setzer.matchthree.game.utils
 
 				if ( piece.pieceType != PieceType.EMPTY ) continue;
 
-				piece = PieceUtils.getNewNormalPiece( col, row, pieceId );
+				piece = PieceUtils.getNewNormalPiece( col, row );
 				pieces.push( piece );
 				grid.setPiece( piece );
 			}
@@ -156,7 +156,7 @@ package setzer.matchthree.game.utils
 			{
 				piece = grid.getPiece( col, row );
 
-				if ( piece.pieceId == pieceBefore.pieceId )
+				if ( (piece.pieceId == pieceBefore.pieceId) && (PieceType.EMPTY != piece.pieceType) )
 				{
 					horizontal.push( piece );
 				} else
@@ -166,7 +166,9 @@ package setzer.matchthree.game.utils
 						result.push( horizontal );
 					}
 					horizontal = new Vector.<PieceData>();
-					horizontal.push( piece );
+
+					if ( PieceType.EMPTY != piece.pieceType )
+						horizontal.push( piece );
 				}
 
 				pieceBefore = piece;
@@ -195,7 +197,7 @@ package setzer.matchthree.game.utils
 			{
 				piece = grid.getPiece( col, row );
 
-				if ( piece.pieceId == pieceBefore.pieceId )
+				if ( piece.pieceId == pieceBefore.pieceId && (PieceType.EMPTY != piece.pieceType) )
 				{
 					vertical.push( piece );
 				} else
@@ -205,7 +207,8 @@ package setzer.matchthree.game.utils
 						result.push( vertical );
 					}
 					vertical = new Vector.<PieceData>();
-					vertical.push( piece );
+					if ( PieceType.EMPTY != piece.pieceType )
+						vertical.push( piece );
 				}
 
 				pieceBefore = piece;
@@ -241,6 +244,53 @@ package setzer.matchthree.game.utils
 				result = result.concat( GridUtils.getRow( grid, row ) );
 			}
 			return result;
+		}
+
+		public static function getAllPowerUps( grid:GridData ):Vector.<PieceData>
+		{
+			var pieces:Vector.<PieceData> = new Vector.<PieceData>();
+			var piece:PieceData;
+			var powerUpTypeIds:Array = [PieceType.ROW, PieceType.COL, PieceType.RAINBOW];
+
+			for ( var row:int = 0; row < grid.maxRows; row++ )
+			{
+				for ( var col:int = 0; col < grid.maxCols; col++ )
+				{
+					piece = grid.getPiece( col, row );
+					if ( powerUpTypeIds.indexOf( piece.pieceType ) != -1 )
+						pieces.push( piece );
+				}
+			}
+			return pieces;
+		}
+
+		public static function printMap( grid:GridData ):void
+		{
+			var result:String = "------------------------\n";
+			var piece:PieceData;
+			var pieceDescription:String;
+
+			for ( var row:int = 0; row < grid.maxRows; row++ )
+			{
+				result += "[";
+				for ( var col:int = 0; col < grid.maxCols; col++ )
+				{
+					piece = grid.getPiece( col, row );
+
+					if ( PieceType.NORMAL == piece.pieceType )
+						pieceDescription = piece.pieceId + " ";//
+					else if ( PieceType.EMPTY == piece.pieceType )
+						pieceDescription = "EE";//
+					else
+						pieceDescription = piece.pieceId + "P";
+
+					pieceDescription = result += pieceDescription;
+					result += (col < grid.maxCols - 1) ? "," : "";
+				}
+				result += "]\n";
+			}
+			result += "------------------------\n";
+			trace( result );
 		}
 
 	}

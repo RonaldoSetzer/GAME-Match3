@@ -74,10 +74,10 @@ package setzer.matchthree.game.models
 
 		public function removePiece( piece:PieceData ):void
 		{
-			PieceUtils.removePieceFromArrays( piece, _pieces );
-			PieceUtils.removePieceFromArrays( piece, _toAdd );
-			PieceUtils.removePieceFromArrays( piece, _toMove );
-			PieceUtils.removePieceFromArrays( piece, _toRemove );
+			PieceUtils.removePieceFromListOfPieces( piece, _pieces );
+			PieceUtils.removePieceFromListOfPieces( piece, _toAdd );
+			PieceUtils.removePieceFromListOfPieces( piece, _toMove );
+			PieceUtils.removePieceFromListOfPieces( piece, _toRemove );
 		}
 
 		public function get toAdd():Vector.<PieceData>

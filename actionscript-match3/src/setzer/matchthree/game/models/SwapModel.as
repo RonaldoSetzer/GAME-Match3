@@ -59,7 +59,7 @@ package setzer.matchthree.game.models
 			return _second;
 		}
 
-		public function udpateStatus():void
+		public function updateStatus():void
 		{
 			if ( status == SwapModel.SWAP )
 				status = SwapModel.VALIDATE; //
