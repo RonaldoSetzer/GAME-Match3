@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:86c1e2ef0b65127eae1888944c370671:3da0516fdf94a3b4909a0b27e02ce12b:533ee0482fe557b182b3ce88c2b6ffbd$ -->
+<TextureAtlas imagePath="matchthree-starling-atlas.png" width="256" height="353">
+    <SubTexture name="button_medium_down" x="0" y="214" width="98" height="44"/>
+    <SubTexture name="button_medium_up" x="112" y="170" width="98" height="44"/>
+    <SubTexture name="button_small_danger_down" x="56" y="170" width="56" height="44"/>
+    <SubTexture name="button_small_danger_up" x="0" y="170" width="56" height="44"/>
+    <SubTexture name="button_small_down" x="98" y="214" width="56" height="44"/>
+    <SubTexture name="button_small_up" x="154" y="214" width="56" height="44"/>
+    <SubTexture name="icon_close" x="35" y="0" width="18" height="18"/>
+    <SubTexture name="icon_config" x="154" y="0" width="24" height="24"/>
+    <SubTexture name="icon_confirm" x="12" y="0" width="23" height="17" frameX="-1" frameY="0" frameWidth="24" frameHeight="18"/>
+    <SubTexture name="icon_delete" x="126" y="0" width="16" height="20"/>
+    <SubTexture name="icon_home" x="53" y="0" width="20" height="18"/>
+    <SubTexture name="icon_level_select" x="90" y="0" width="20" height="19" frameX="0" frameY="0" frameWidth="20" frameHeight="20"/>
+    <SubTexture name="icon_pause" x="110" y="0" width="16" height="20"/>
+    <SubTexture name="icon_resume" x="73" y="0" width="17" height="19" frameX="-1" frameY="0" frameWidth="18" frameHeight="20"/>
+    <SubTexture name="icon_retry" x="178" y="0" width="26" height="24"/>
+    <SubTexture name="level_select_small_star" x="0" y="0" width="12" height="10"/>
+    <SubTexture name="logo_matchthree" x="49" y="258" width="207" height="95"/>
+    <SubTexture name="logo_setzer" x="142" y="0" width="12" height="20"/>
+    <SubTexture name="piece_col_1" x="216" y="98" width="36" height="36"/>
+    <SubTexture name="piece_col_2" x="0" y="134" width="36" height="36"/>
+    <SubTexture name="piece_col_3" x="36" y="134" width="36" height="36"/>
+    <SubTexture name="piece_col_4" x="108" y="98" width="36" height="36"/>
+    <SubTexture name="piece_col_5" x="144" y="98" width="36" height="36"/>
+    <SubTexture name="piece_col_6" x="180" y="134" width="36" height="36"/>
+    <SubTexture name="piece_normal_1" x="72" y="98" width="36" height="36"/>
+    <SubTexture name="piece_normal_2" x="216" y="134" width="36" height="36"/>
+    <SubTexture name="piece_normal_3" x="108" y="134" width="36" height="36"/>
+    <SubTexture name="piece_normal_4" x="144" y="134" width="36" height="36"/>
+    <SubTexture name="piece_normal_5" x="72" y="134" width="36" height="36"/>
+    <SubTexture name="piece_normal_6" x="180" y="98" width="36" height="36"/>
+    <SubTexture name="piece_rainbow" x="208" y="62" width="36" height="36"/>
+    <SubTexture name="piece_row_1" x="136" y="62" width="36" height="36"/>
+    <SubTexture name="piece_row_2" x="100" y="62" width="36" height="36"/>
+    <SubTexture name="piece_row_3" x="64" y="62" width="36" height="36"/>
+    <SubTexture name="piece_row_4" x="36" y="98" width="36" height="36"/>
+    <SubTexture name="piece_row_5" x="172" y="62" width="36" height="36"/>
+    <SubTexture name="piece_row_6" x="0" y="98" width="36" height="36"/>
+    <SubTexture name="popup_star" x="0" y="258" width="49" height="47" frameX="0" frameY="0" frameWidth="50" frameHeight="48"/>
+    <SubTexture name="star_hud_display_00" x="96" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_01" x="0" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_02" x="64" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_03" x="32" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_04" x="204" y="0" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_05" x="32" y="62" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_06" x="0" y="62" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_07" x="192" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_08" x="160" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="star_hud_display_09" x="224" y="31" width="32" height="31"/>
+    <SubTexture name="star_hud_display_10" x="128" y="31" width="32" height="31" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+</TextureAtlas>
