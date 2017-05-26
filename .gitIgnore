@@ -4,6 +4,9 @@
 bin-debug/
 bin-release/
 temp/
+dist/
+node_modules/
+coverage/
 
 # Project property files
 .actionScriptProperties

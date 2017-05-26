@@ -2,6 +2,9 @@ package setzer.matchthree.assets
 {
 	public class Embeds
 	{
+		[Embed(source="/../assets/atlas/extras/logo_actionscript.png")]
+		public static const LANGUAGE_IMAGE:Class;
+
 		/* BACKGROUND */
 		[Embed(source="/../assets/backgrounds/background.png")]
 		public static const BG_IMAGE:Class;
