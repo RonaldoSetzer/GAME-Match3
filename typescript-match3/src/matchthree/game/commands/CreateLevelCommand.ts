@@ -25,9 +25,12 @@ export class CreateLevelCommand implements ICommand {
     @inject(GameEvent)
     public gameEvent: GameEvent;
 
+    @inject(LevelsRepository)
+    public levelsRepository: LevelsRepository;
+
     public execute(): void {
         this.levelModel.levelId = this.gameEvent.extra.levelId;
-        this.levelModel.levelInfo = LevelsRepository.getLevelInfoById(this.levelModel.levelId);
+        this.levelModel.levelInfo = this.levelsRepository.getLevelInfoById(this.levelModel.levelId);
         this.levelModel.reset();
         this.levelModel.numMoves = this.levelModel.levelInfo.numMoves;
 

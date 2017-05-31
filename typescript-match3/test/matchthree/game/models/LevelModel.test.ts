@@ -1,10 +1,11 @@
 import { LevelInfo } from "./../../../../src/matchthree/game/models/LevelInfo";
 import { LevelModel } from "./../../../../src/matchthree/game/models/LevelModel";
+import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
 import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
 import { assert } from "chai";
-import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
 
 describe("LevelModel", () => {
+
     let levelModel: LevelModel;
 
     beforeEach(() => {
@@ -35,7 +36,7 @@ describe("LevelModel", () => {
         assert.equal(0, levelModel.toMove.length, "toMove.length");
     });
 
-    it("Reset: With LevelInfo", () => {
+    it("Reset: When there is a LevelInfo specified", () => {
         let levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
         levelModel.levelInfo = levelInfo;
         levelModel.reset();
@@ -44,14 +45,13 @@ describe("LevelModel", () => {
         assert.equal(levelInfo.time, levelModel.clock);
     });
 
-    it("GetMaxCols/GetMaxRows: With LevelInfo", () => {
+    it("GetMaxCols/GetMaxRows: When there is a LevelInfo specified", () => {
         let levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
         levelModel.levelInfo = levelInfo;
 
         assert.equal(levelInfo.maxCols, levelModel.maxCols);
         assert.equal(levelInfo.maxRows, levelModel.maxRows);
     });
-
 
     it("AddPiece", () => {
         let piece: PieceData = new PieceData();
@@ -64,7 +64,6 @@ describe("LevelModel", () => {
         assert.equal(piece, levelModel.pieces.pop());
     });
 
-
     it("AddToMoveList", () => {
         let piece: PieceData = new PieceData();
         levelModel.addToMoveList(piece);
@@ -73,7 +72,6 @@ describe("LevelModel", () => {
         assert.equal(piece, levelModel.toMove.pop());
     });
 
-
     it("AddToRemoveList", () => {
         let piece: PieceData = new PieceData();
         levelModel.addToRemoveList(piece);
@@ -81,7 +79,6 @@ describe("LevelModel", () => {
         assert.equal(1, levelModel.toRemove.length);
         assert.equal(piece, levelModel.toRemove.pop());
     });
-
 
     it("RemovePiece", () => {
         let piece: PieceData = new PieceData();
@@ -98,24 +95,20 @@ describe("LevelModel", () => {
         assert.equal(0, levelModel.toMove.length);
     });
 
-
     it("UpateScoreByNormalType", () => {
         levelModel.updateScoreByPieceType(PieceType.NORMAL);
         assert.equal(100, levelModel.score);
     });
-
 
     it("UpateScoreByLineType", () => {
         levelModel.updateScoreByPieceType(PieceType.ROW);
         assert.equal(200, levelModel.score);
     });
 
-
     it("UpateScoreByColumnType", () => {
         levelModel.updateScoreByPieceType(PieceType.COL);
         assert.equal(200, levelModel.score);
     });
-
 
     it("UpateScoreByRainbowType", () => {
         levelModel.updateScoreByPieceType(PieceType.RAINBOW);

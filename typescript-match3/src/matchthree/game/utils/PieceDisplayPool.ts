@@ -1,27 +1,27 @@
+import { Sprite } from "pixi.js";
 import { PieceUtils } from "./PieceUtils";
-import { PieceDisplay } from "./../displays/PieceDisplay";
 import { AtlasKeys } from "./../../utils/AtlasKeys";
 
-export class PieceDisplayPool {
+export class PixiSpritePool {
 
-    public static pieceLists: Map<string, Array<PieceDisplay>>;
+    public static spriteList: Map<string, Array<Sprite>>;
 
     public static init(): void {
-        this.pieceLists = new Map<string, Array<PieceDisplay>>();
+        this.spriteList = new Map<string, Array<Sprite>>();
     }
 
-    public static getPieceDisplay(pieceId: number, pieceType: string): PieceDisplay {
-        let assetId: string = PieceUtils.getAssetId(pieceId, pieceType);
+    public static getImage(assetId: string): Sprite {
 
-        if (this.pieceLists.get(assetId) === undefined) {
-            this.pieceLists.set(assetId, new Array<PieceDisplay>());
+        if (this.spriteList.get(assetId) === undefined) {
+            this.spriteList.set(assetId, new Array<Sprite>());
         }
 
-        let list: Array<PieceDisplay> = this.pieceLists.get(assetId);
-        let piece: PieceDisplay;
+        let list: Array<Sprite> = this.spriteList.get(assetId);
+        let piece: Sprite;
         if (list.length === 0) {
-            let texture = AtlasKeys.getPieceTexture(pieceId, pieceType);
-            piece = new PieceDisplay(texture, pieceId, pieceType);
+            let texture = AtlasKeys.getTexture(assetId);
+            piece = new Sprite(texture);
+            piece.anchor.set(.5);
         } else {
             piece = list.shift();
         }
@@ -32,8 +32,9 @@ export class PieceDisplayPool {
         return piece;
     }
 
-    public static back(piece: PieceDisplay): void {
-        let list: Array<PieceDisplay> = this.pieceLists.get(piece.assetId);
+    public static back(piece: Sprite): void {
+        let assetId = (<any>piece.texture).textureCacheIds[0];
+        let list: Array<Sprite> = this.spriteList.get(assetId);
         piece.visible = false;
 
         if (list.indexOf(piece) === -1) {

@@ -47,17 +47,11 @@ export class AtlasKeys {
     private static resources: any;
     private static textureCache: any;
 
-    public static update(): void {
-        this.resources = PIXI.loader.resources;
-        this.textureCache = PIXI.utils.TextureCache;
+    public static update(textureCache: any): void {
+        this.textureCache = textureCache;
     }
 
     public static getTexture(atlasKey): Texture {
         return this.textureCache[atlasKey];
-    }
-
-    public static getPieceTexture(pieceId: number, pieceType): Texture {
-        let assetId = PieceUtils.getAssetId(pieceId, pieceType);
-        return AtlasKeys.getTexture(assetId);
     }
 }

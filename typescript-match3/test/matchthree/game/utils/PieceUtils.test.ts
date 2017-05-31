@@ -1,9 +1,8 @@
-import { AtlasKeys } from "./../../../../src/matchthree/utils/AtlasKeys";
-import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
-import { PieceUtils } from "./../../../../src/matchthree/game/utils/PieceUtils";
-import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
-import { assert } from "chai";
 import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
+import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
+import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
+import { PieceUtils } from "./../../../../src/matchthree/game/utils/PieceUtils";
+import { assert } from "chai";
 
 describe("PieceUtils", () => {
 
@@ -30,7 +29,6 @@ describe("PieceUtils", () => {
     });
 
     it("GetNewPowerUpPiece", () => {
-
         let col = 2;
         let row = 3;
         let piece1: PieceData = PieceUtils.getNewPowerUpPiece(col, row, PieceType.RAINBOW);
@@ -49,15 +47,13 @@ describe("PieceUtils", () => {
         assert.equal(piece1.row, row);
     });
 
-
-
-    it("GetNewPowerByChainLengthThree", () => {
+    it("GetNewPowerByChainLength: The chain contains three pieces", () => {
         let normalPiece: PieceData = PieceUtils.getNewPowerByChainLength(3, PieceUtils.getNewNormalPiece(0, 0));
 
         assert.isNull(normalPiece);
     });
 
-    it("GetNewPowerByChainLengthPowerUp", () => {
+    it("GetNewPowerByChainLength: The chai contains more than three pieces", () => {
         let powerUpColRow: PieceData = PieceUtils.getNewPowerByChainLength(4, PieceUtils.getNewNormalPiece(0, 0, PieceIds.YELLOW));
         let powerUpRainbow: PieceData = PieceUtils.getNewPowerByChainLength(5, PieceUtils.getNewNormalPiece(0, 0, PieceIds.GREEN));
 
@@ -71,7 +67,6 @@ describe("PieceUtils", () => {
         assert.equal(PieceIds.RAINBOW, powerUpRainbow.pieceId);
     });
 
-
     it("RemovePieceFromListsOfPieces", () => {
         let piece: PieceData = new PieceData();
         let pieces: Array<PieceData> = [piece];
@@ -81,74 +76,40 @@ describe("PieceUtils", () => {
         assert.equal(0, pieces.length);
     });
 
-
-    it("IsAdjacentHorizontalTrue", () => {
+    it("IsAdjacent: Three adjacent pieces in the same row", () => {
         let piece1: PieceData = new PieceData(1, 1);
         let piece2: PieceData = new PieceData(piece1.col + 1, piece1.row);
         let piece3: PieceData = new PieceData(piece1.col - 1, piece1.row);
 
         assert.isTrue(PieceUtils.IsAdjacent(piece1, piece2));
         assert.isTrue(PieceUtils.IsAdjacent(piece1, piece3));
-        assert.isTrue(PieceUtils.IsAdjacent(piece2, piece1));
-        assert.isTrue(PieceUtils.IsAdjacent(piece3, piece1));
     });
 
-
-    it("IsAdjacentHorizontalFalse", () => {
-        let piece1: PieceData = new PieceData(1, 1);
+    it("IsAdjacent: Three not adjacent pieces in the same row", () => {
+        let piece1: PieceData = new PieceData(3, 1);
         let piece2: PieceData = new PieceData(piece1.col + 2, piece1.row);
-
-        let result = false;
-        let start: number = piece2.col;
-        let end: number = piece2.col + 10;
-
-        for (let right: number = start; right < end; right++) {
-            piece2.col = right;
-            result = (result || PieceUtils.IsAdjacent(piece1, piece2));
-        }
-
-        end = piece2.col - 10;
-        for (let left: number = start; left < end; left--) {
-            piece2.col = left;
-            result = (result || PieceUtils.IsAdjacent(piece1, piece2));
-        }
+        let piece3: PieceData = new PieceData(piece1.col - 2, piece1.row);
 
         assert.isFalse(PieceUtils.IsAdjacent(piece1, piece2));
+        assert.isFalse(PieceUtils.IsAdjacent(piece1, piece3));
     });
 
-
-    it("IsAdjacentVerticalTrue", () => {
-        let piece1: PieceData = new PieceData(1, 1);
+    it("IsAdjacent: Three adjacent pieces in the same column", () => {
+        let piece1: PieceData = new PieceData(1, 3);
         let piece2: PieceData = new PieceData(piece1.col, piece1.row + 1);
         let piece3: PieceData = new PieceData(piece1.col, piece1.row - 1);
 
         assert.isTrue(PieceUtils.IsAdjacent(piece1, piece2));
         assert.isTrue(PieceUtils.IsAdjacent(piece1, piece3));
-        assert.isTrue(PieceUtils.IsAdjacent(piece2, piece1));
-        assert.isTrue(PieceUtils.IsAdjacent(piece3, piece1));
     });
 
-
-    it("IsAdjacentVerticalFalse", () => {
-        let piece1: PieceData = new PieceData(1, 1);
+    it("IsAdjacent: Three not adjacent pieces in the same column", () => {
+        let piece1: PieceData = new PieceData(1, 3);
         let piece2: PieceData = new PieceData(piece1.col, piece1.row + 2);
-
-        let result = false;
-        let start: number = piece2.row;
-        let end: number = piece2.row + 10;
-
-        for (let down: number = start; down < end; down++) {
-            piece2.row = down;
-            result = (result || PieceUtils.IsAdjacent(piece1, piece2));
-        }
-
-        end = piece2.row - 10;
-        for (let up: number = start; up < end; up--) {
-            piece2.row = up;
-            result = (result || PieceUtils.IsAdjacent(piece1, piece2));
-        }
+        let piece3: PieceData = new PieceData(piece1.col, piece1.row - 2);
 
         assert.isFalse(PieceUtils.IsAdjacent(piece1, piece2));
+        assert.isFalse(PieceUtils.IsAdjacent(piece1, piece3));
     });
 
     it("GetAssetId", () => {
@@ -158,10 +119,14 @@ describe("PieceUtils", () => {
         let assetIdOrangeRow = PieceUtils.getAssetId(pieceId, PieceType.ROW);
         let assetIdOrangeCol = PieceUtils.getAssetId(pieceId, PieceType.COL);
 
-        assert.equal(AtlasKeys.PIECE_RAINBOW + ".png", assetIdRainbowRainbow, "Rainbow");
-        assert.equal(AtlasKeys.PIECE_NORMAL + "_" + pieceId + ".png", assetIdOrangeNormal, "Rainbow");
-        assert.equal(AtlasKeys.PIECE_ROW + "_" + pieceId + ".png", assetIdOrangeRow, "Rainbow");
-        assert.equal(AtlasKeys.PIECE_COL + "_" + pieceId + ".png", assetIdOrangeCol, "Rainbow");
-    });
+        let PIECE_NORMAL = "piece_normal_" + pieceId + ".png";
+        let PIECE_ROW = "piece_row_" + pieceId + ".png";
+        let PIECE_COL = "piece_col_" + pieceId + ".png";
+        let PIECE_RAINBOW = "piece_rainbow.png";
 
+        assert.equal(PIECE_RAINBOW, assetIdRainbowRainbow, "PIECE_RAINBOW");
+        assert.equal(PIECE_NORMAL, assetIdOrangeNormal, "PIECE_NORMAL");
+        assert.equal(PIECE_ROW, assetIdOrangeRow, "PIECE_ROW");
+        assert.equal(PIECE_COL, assetIdOrangeCol, "PIECE_COL");
+    });
 });

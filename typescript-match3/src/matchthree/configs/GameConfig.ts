@@ -9,7 +9,7 @@ import { GameStatus } from "./../game/models/GameStatus";
 import { LevelModel } from "./../game/models/LevelModel";
 import { SwapModel } from "./../game/models/SwapModel";
 import { LevelsRepository } from "./../game/utils/LevelRepository";
-import { PieceDisplayPool } from "./../game/utils/PieceDisplayPool";
+import { PixiSpritePool } from "./../game/utils/PieceDisplayPool";
 import { GameService } from "./../services/GameService";
 
 import { IConfig, injectable, inject, IEventCommandMap, IContext } from "robotlegs";
@@ -25,8 +25,7 @@ export class GameConfig implements IConfig {
 
     public configure(): void {
 
-        LevelsRepository.init();
-        PieceDisplayPool.init();
+        PixiSpritePool.init();
 
         this.mapCommands();
         this.mapServices();
@@ -49,6 +48,7 @@ export class GameConfig implements IConfig {
 
     private mapManager(): void {
         this.context.injector.bind(GameManager).to(GameManager).inSingletonScope();
+        this.context.injector.bind(LevelsRepository).to(LevelsRepository).inSingletonScope();
     }
 
     private mapModels(): void {

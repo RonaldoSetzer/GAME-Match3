@@ -14,7 +14,7 @@ export class LevelInfo {
     private _time: number;
     private _levelId: number;
 
-    constructor(levelId: number, maxCols: number, maxRows: number, levelType: string, scoreStarts: number[], moves = 16, time = 0) {
+    constructor(levelId: number, maxCols: number, maxRows: number, levelType: string, scoreStarts: number[], moves: number, time = 0) {
         this._levelId = levelId;
         this._numMoves = moves;
         this._time = time;
@@ -22,16 +22,6 @@ export class LevelInfo {
         this._maxRows = maxRows;
         this._levelType = levelType;
         this._scoreStarts = scoreStarts;
-    }
-
-    public getNumStars(): number {
-        let numStars = 0;
-        for (let i = 0; i < this.scoreStarts.length; i++) {
-            if (this.hiScore >= this.scoreStarts[i]) {
-                numStars++;
-            }
-        }
-        return numStars;
     }
 
     public get scoreStarts(): Array<number> {

@@ -37,6 +37,8 @@ This is a TypeScript open-source game which is a port of the ActionScript versio
 
 ![screenshot03](img_ss_match3_ts_03.png)
 
+![screenshot04](img_ss_match3_ts_04.png)
+
 * * *
 
 ### Screenshots

@@ -43,7 +43,7 @@ export class PixiFactory {
     }
 
     public static getBackground(): Sprite {
-        return PIXI.Sprite.fromImage(AtlasKeys.BG_IMAGE);
+        return new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_IMAGE));
     }
 
     public static getColorBackground(color = 0x000000): Graphics {
@@ -57,7 +57,7 @@ export class PixiFactory {
         return background;
     }
     public static getBackgroundPopup(): Sprite {
-        let image: Sprite = PIXI.Sprite.fromImage(AtlasKeys.BG_POPUP_IMAGE);
+        let image: Sprite = new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_POPUP_IMAGE));
         image.anchor.set(.5);
         image.x = ViewPortSize.HALF_WIDTH;
         image.y = ViewPortSize.HALF_HEIGHT;
@@ -65,7 +65,7 @@ export class PixiFactory {
     }
 
     public static getBackgroundHUD(): Sprite {
-        return PIXI.Sprite.fromImage(AtlasKeys.BG_HUD_IMAGE);
+        return new Sprite(AtlasKeys.getTexture(AtlasKeys.BG_HUD_IMAGE));
     }
 
     public static getShadowBackground(alpha = .6): Graphics {

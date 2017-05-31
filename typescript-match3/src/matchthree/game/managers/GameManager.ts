@@ -33,37 +33,37 @@ export class GameManager {
         this.swapModel.setMaxValues(this._grid.maxCols, this._grid.maxRows);
     }
 
-    public nextStep= (ob:any=this) => {
+    public nextStep = (nthis: any = this) => {
         // SWAP
-        if (ob.swapModel.status === SwapModel.SWAP || ob.swapModel.status === SwapModel.ROLLBACK) {
-            ob.swapModel.updateStatus();
-            ob.swapSelectedPieces();
+        if (nthis.swapModel.status === SwapModel.SWAP || nthis.swapModel.status === SwapModel.ROLLBACK) {
+            nthis.swapModel.updateStatus();
+            nthis.swapSelectedPieces();
 
             return;
 
-        } else if (ob.swapModel.status === SwapModel.VALIDATE) {
-            ob.swapModel.updateStatus();
-            ob.validateSwap();
+        } else if (nthis.swapModel.status === SwapModel.VALIDATE) {
+            nthis.swapModel.updateStatus();
+            nthis.afterSwap();
 
             return;
         }
 
         // UDPATE VIEW - ADD - MOVE - REMOVE
-        if (ob.levelModel.toAdd.length || ob.levelModel.toMove.length || ob.levelModel.toRemove.length) {
-            ob.gameService.updateGridField();
+        if (nthis.levelModel.toAdd.length || nthis.levelModel.toMove.length || nthis.levelModel.toRemove.length) {
+            nthis.gameService.updateGridField();
             return;
         }
 
         // STAND BY MODE
-        if (GridUtils.hasEmptyPiece(ob.grid)) {
-            ob.fillStep();
+        if (GridUtils.hasEmptyPiece(nthis.grid)) {
+            nthis.fillStep();
         } else {
-            ob.gameStatus.hasToWait = ob.removeAllChains();
-            if (ob.gameStatus.hasToWait === false && ob.gameStatus.isGameOver) {
-                ob.gameService.gameOverCommand();
+            nthis.gameStatus.hasToWait = nthis.removeAllChains();
+            if (nthis.gameStatus.hasToWait === false && nthis.gameStatus.isGameOver) {
+                nthis.gameService.gameOverCommand();
             }
         }
-        ob.gameService.updateGridField();
+        nthis.gameService.updateGridField();
     }
 
     public removeAllPieces(): void {
@@ -85,9 +85,7 @@ export class GameManager {
             if (chains[i].length > 3) {
                 rndIndex = Math.floor(Math.random() * chains[i].length);
                 powerUp = PieceUtils.getNewPowerByChainLength(chains[i].length, chains[i][rndIndex]);
-                if (powerUp) {
-                    toAdd.push(powerUp);
-                }
+                toAdd.push(powerUp);
             }
             this.removePiecesInList(chains[i]);
         }
@@ -180,7 +178,7 @@ export class GameManager {
         return this._grid;
     }
 
-    private validateSwap(): void {
+    private afterSwap(): void {
         let needToRollback = false;
 
         let piece1: PieceData = this.grid.getPiece(this.swapModel.first.col, this.swapModel.first.row);

@@ -1,14 +1,13 @@
+import { Sprite } from "pixi.js";
 import { Tile } from "./Tile";
-import { PieceDisplay } from "../displays/PieceDisplay";
 import { PieceType } from "./../utils/PieceType";
-import { PieceDisplayPool } from "./../utils/PieceDisplayPool";
 
 export class PieceData {
 
     public pieceId: number;
     public row: number;
     public col: number;
-    public display: PieceDisplay;
+    public display: Sprite;
 
     private _pieceType: string;
     public get pieceType(): string {

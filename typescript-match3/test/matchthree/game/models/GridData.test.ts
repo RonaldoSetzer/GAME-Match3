@@ -1,6 +1,6 @@
 import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
-import { PieceType } from "../../../../src/matchthree/game/utils/PieceType";
 import { GridData } from "./../../../../src/matchthree/game/models/GridData";
+import { PieceType } from "../../../../src/matchthree/game/utils/PieceType";
 import { assert } from "chai";
 
 describe("Grid", () => {
@@ -31,7 +31,7 @@ describe("Grid", () => {
         assert.equal(maxRows, grid.maxRows);
     });
 
-    it("GetPiece: Returns the Piece", () => {
+    it("GetPiece", () => {
         let col = 2;
         let row = 2;
         let piece = new PieceData(col, row);
@@ -47,7 +47,7 @@ describe("Grid", () => {
         assert.equal(undefined, piece);
     });
 
-    it("SetPiece: Set the Piece in the position", () => {
+    it("SetPiece", () => {
         let col = 0;
         let row = 0;
         let piece = new PieceData(col, row);

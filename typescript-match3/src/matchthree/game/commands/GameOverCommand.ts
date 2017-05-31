@@ -1,3 +1,4 @@
+import { ScoreUtils } from "./../utils/ScoreUtils";
 import { LevelModel } from "./../models/LevelModel";
 import { GameService } from "./../../services/GameService";
 import { FlowService } from "./../../services/FlowService";
@@ -17,20 +18,18 @@ export class GameOverCommand implements ICommand {
     @inject(FlowService)
     public flowService: FlowService;
 
+    @inject(LevelsRepository)
+    public levelsRepository: LevelsRepository;
+
     public execute(): void {
         this.gameService.pause();
         let hiScore = this.levelModel.levelInfo.hiScore;
         hiScore = Math.max(hiScore, this.levelModel.score);
 
-        LevelsRepository.updateHiScore(this.levelModel.levelId, hiScore);
+        this.levelsRepository.updateHiScore(this.levelModel.levelId, hiScore);
         // SharedObjectManager.updateHighScore();
 
-        let stars = 0;
-        for (let i = 0; i < this.levelModel.levelInfo.scoreStarts.length; i++) {
-            if (this.levelModel.score >= this.levelModel.levelInfo.scoreStarts[i]) {
-                stars++;
-            }
-        }
+        let stars = ScoreUtils.getNumStars(this.levelModel.score, this.levelModel.levelInfo.scoreStarts);
 
         this.levelModel.numStars = stars;
 

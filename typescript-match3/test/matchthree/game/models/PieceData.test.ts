@@ -1,11 +1,10 @@
 import { Tile } from "./../../../../src/matchthree/game/models/Tile";
-import { Texture } from "pixi.js";
-import { PieceDisplay } from "./../../../../src/matchthree/game/displays/PieceDisplay";
 import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
 import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
 import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
 import { GridData } from "./../../../../src/matchthree/game/models/GridData";
 import { assert } from "chai";
+import { Texture, Sprite } from "pixi.js";
 
 describe("PieceData", () => {
 
@@ -70,7 +69,7 @@ describe("PieceData", () => {
     it("UpdateDisplayPosition: Any", () => {
         let texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
         piece = new PieceData(5, 6, PieceType.NORMAL, PieceIds.ORANGE);
-        piece.display = new PieceDisplay(texture, PieceIds.ORANGE, PieceType.NORMAL);
+        piece.display = new Sprite(texture);
         piece.updateDisplayPosition();
         assert.equal(piece.display.x, Tile.TILE_WIDTH * piece.col);
         assert.equal(piece.display.y, Tile.TILE_WIDTH * piece.row);
@@ -79,7 +78,7 @@ describe("PieceData", () => {
     it("UpdateDisplayPosition: Any in the first row", () => {
         let texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
         piece = new PieceData(5, 0, PieceType.NORMAL, PieceIds.ORANGE);
-        piece.display = new PieceDisplay(texture, PieceIds.ORANGE, PieceType.NORMAL);
+        piece.display = new Sprite(texture);
         piece.updateDisplayPosition();
         assert.equal(piece.display.x, Tile.TILE_WIDTH * piece.col);
         assert.equal(piece.display.y, -Tile.TILE_HEIGHT);

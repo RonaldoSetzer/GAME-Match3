@@ -19,4 +19,5 @@ coverage/
 *.iws
 *.DS_STORE
 .idea/
+.vscode/
 out/

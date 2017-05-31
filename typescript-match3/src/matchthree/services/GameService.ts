@@ -13,7 +13,7 @@ export class GameService {
     public gameStatus: GameStatus;
 
     // Commands
-    public createLevel(levelId = 1): void {
+    public createLevel(levelId: number): void {
         let event: GameEvent = new GameEvent(GameEvent.CREATE_LEVEL_COMMAND);
         event.extra = { levelId: levelId };
         this.eventDispatcher.dispatchEvent(event);

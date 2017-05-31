@@ -26,7 +26,7 @@ export class SwapPiecesConfirmCommand implements ICommand {
 
         this.gameService.updateHUDData();
 
-        if (this.levelModel.numMoves == 0) {
+        if (this.levelModel.numMoves === 0) {
             this.gameStatus.gameOver();
         }
     }

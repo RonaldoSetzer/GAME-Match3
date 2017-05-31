@@ -1,10 +1,10 @@
-import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
-import { PowerUpUtils } from "./../../../../src/matchthree/game/utils/PowerUpUtils";
-import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
-import { PieceUtils } from "./../../../../src/matchthree/game/utils/PieceUtils";
-import { assert } from "chai";
 import { GridData } from "./../../../../src/matchthree/game/models/GridData";
 import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
+import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
+import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
+import { PowerUpUtils } from "./../../../../src/matchthree/game/utils/PowerUpUtils";
+import { PieceUtils } from "./../../../../src/matchthree/game/utils/PieceUtils";
+import { assert } from "chai";
 
 describe("PowerUpUtils", () => {
 
@@ -25,7 +25,7 @@ describe("PowerUpUtils", () => {
     });
 
 
-    it("GetPiecesAffectedByPowerUpPieceAffectedIsAPowerUpRow", () => {
+    it("GetPiecesAffectedByPowerUp: the Piece affected is a PowerUpRow", () => {
         let piece: PieceData;
         let row = 0;
         let isSameRow = true;
@@ -48,7 +48,7 @@ describe("PowerUpUtils", () => {
     });
 
 
-    it("GetPiecesAffectedByPowerUpPieceAffectedIsAPowerUpCol", () => {
+    it("GetPiecesAffectedByPowerUp: the Piece affected is a PowerUpCol", () => {
         let piece: PieceData;
         let col = 0;
         let isSameCol = true;
@@ -71,7 +71,7 @@ describe("PowerUpUtils", () => {
     });
 
 
-    it("GetPiecesAffectedByPowerUpPieceAffectedIsAPowerUpRainbow", () => {
+    it("GetPiecesAffectedByPowerUp: the Piece affected is a PowerUpRainbow", () => {
         let piece: PieceData;
         let col = 0;
         let row = 0;
@@ -105,14 +105,13 @@ describe("PowerUpUtils", () => {
     });
 
 
-    it("GetPiecesAffectedByPowerUpPieceAffectedIsAPowerUpColoredRainbow", () => {
+    it("GetPiecesAffectedByPowerUp: the Piece affected is a PowerUpRainbow with a PiecedId from another piece", () => {
         let piece: PieceData;
         let col = 0;
         let row = 0;
         let isInPieces = true;
 
         for (let i = 0; i < 10; i++) {
-
             do {
                 row = Math.floor(Math.random() * this.grid.maxRows);
                 col = Math.floor(Math.random() * this.grid.maxCols);

@@ -1,3 +1,4 @@
+import { ScoreUtils } from "./../game/utils/ScoreUtils";
 import { LevelInfo } from "./../game/models/LevelInfo";
 import { LevelsRepository } from "./../game/utils/LevelRepository";
 import { GameService } from "./../services/GameService";
@@ -18,6 +19,9 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
     @inject(GameService)
     public gameService: GameService;
 
+    @inject(LevelsRepository)
+    public levelsRepository: LevelsRepository;
+
     private levelsIds: Map<LevelSelectButton, number>;
 
     public initialize(): void {
@@ -33,7 +37,7 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
 
     private createMapButtons(): void {
         this.levelsIds = new Map<LevelSelectButton, number>();
-        let levels: Array<LevelInfo> = LevelsRepository.getLevels();
+        let levels: Array<LevelInfo> = this.levelsRepository.getLevels();
         let levelInfo: LevelInfo;
         let levelButton: LevelSelectButton;
 
@@ -42,7 +46,7 @@ export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
             levelButton = this.view.createLevelButton(String(levelInfo.levelId + 1));
             levelButton.x = ViewPortSize.HALF_WIDTH - (levelButton.width + 4) + (Math.floor(i % 3) * (levelButton.width + 4));
             levelButton.y = 180 + (Math.floor(i / 3) * (levelButton.height + 8));
-            levelButton.setStars(levelInfo.getNumStars());
+            levelButton.setStars(ScoreUtils.getNumStars(levelInfo.hiScore, levelInfo.scoreStarts));
             levelButton.anchor.set(.5);
             this.levelsIds.set(levelButton, levels[i].levelId);
             this.eventMap.mapListener(levelButton, "click", this.levelButton_onTriggeredHandler, this);
