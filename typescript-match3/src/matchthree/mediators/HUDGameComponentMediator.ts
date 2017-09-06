@@ -6,23 +6,23 @@ import { GameService } from "./../services/GameService";
 import { FlowService } from "./../services/FlowService";
 import { HUDGameComponent } from "./../views/components/HUDGameComponent";
 
-import { injectable, inject } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameStatus)
-    public gameStatus: GameStatus;
+    private gameStatus: GameStatus;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     private _paused: boolean;
 
@@ -48,26 +48,26 @@ export class HUDGameComponentMediator extends Mediator<HUDGameComponent> {
 
     private game_onResumeHandler(e: any): void {
         this._paused = false;
-        this.tick(this);
+        this.tick();
     }
 
-    private tick(obThis: any = this): void {
-        if (obThis._paused === true) {
+    private tick(): void {
+        if (this._paused === true) {
             return;
         }
-        obThis.levelModel.clock--;
-        obThis.view.updateValues(obThis.levelModel);
+        this.levelModel.clock--;
+        this.view.updateValues(this.levelModel);
 
-        if (obThis.levelModel.levelInfo.levelType === LevelInfo.TIMER_TYPE && obThis.levelModel.clock === 0) {
-            if (obThis.gameStatus.hasToWait) {
-                obThis.gameService.gameOver();
+        if (this.levelModel.levelInfo.levelType === LevelInfo.TIMER_TYPE && this.levelModel.clock === 0) {
+            if (this.gameStatus.hasToWait) {
+                this.gameService.gameOver();
             } else {
-                obThis.gameService.gameOverCommand();
+                this.gameService.gameOverCommand();
             }
             this._paused = true;
             return;
         }
-        setTimeout(obThis.tick, 1000, obThis);
+        setTimeout(this.tick.bind(this), 1000);
     }
 
     private game_onUpdateHandler(e: any): void {

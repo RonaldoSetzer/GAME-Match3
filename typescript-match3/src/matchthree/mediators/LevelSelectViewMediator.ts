@@ -7,20 +7,20 @@ import { ViewPortSize } from "./../utils/ViewPortSize";
 import { LevelSelectButton } from "./../views/components/LevelSelectButton";
 import { LevelSelectView } from "./../views/LevelSelectView";
 
-import { injectable, inject } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class LevelSelectViewMediator extends Mediator<LevelSelectView> {
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(LevelsRepository)
-    public levelsRepository: LevelsRepository;
+    private levelsRepository: LevelsRepository;
 
     private levelsIds: Map<LevelSelectButton, number>;
 

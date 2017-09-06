@@ -1,14 +1,14 @@
 import { FlowService } from "./../services/FlowService";
 import { HomeView } from "./../views/HomeView";
 
-import { injectable, inject, EventDispatcher } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject, EventDispatcher } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class HomeViewMediator extends Mediator<HomeView> {
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     public initialize(): void {
         this.eventMap.mapListener(this.view.playButton, "click", this.playButton_onClick, this);

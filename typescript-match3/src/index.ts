@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/robotlegs-pixi/definitions/pixi.d.ts" />
+/// <reference path="../node_modules/@robotlegsjs/pixi/definitions/pixi.d.ts" />
 
 import "reflect-metadata";
 import PIXI = require("pixi.js");
@@ -7,12 +7,11 @@ import { AtlasKeys } from "./matchthree/utils/AtlasKeys";
 import { GameConfig } from "./matchthree/configs/GameConfig";
 import { PalidorConfig } from "./matchthree/configs/PalidorConfig";
 import { ViewsConfig } from "./matchthree/configs/ViewsConfig";
-import { PalidorFlowManagerExtension } from "./robotlegs/bender/extensions/palidorFlowManager/PalidorFlowManagerExtension";
-import { PixiContainer } from "./robotlegs/bender/extensions/palidorFlowManager/impl/PixiContainer";
 
 import { Container } from "pixi.js";
-import { Context, MVCSBundle, LogLevel } from "robotlegs";
-import { PixiBundle, ContextView } from "robotlegs-pixi";
+import { Context, MVCSBundle, LogLevel } from "@robotlegsjs/core";
+import { PixiBundle, ContextView } from "@robotlegsjs/pixi";
+import { PalidorPixiExtension, PixiRootContainer } from "@robotlegsjs/pixi-palidor";
 
 class Main {
     private stage: PIXI.Container;
@@ -25,9 +24,10 @@ class Main {
         this.context = new Context();
         // this.context.logLevel = LogLevel.DEBUG;
         this.context.install(MVCSBundle, PixiBundle)
-            .configure(new ContextView((<any>this.renderer).plugins.interaction))
-            .configure(ViewsConfig, GameConfig, PalidorConfig)
-            .install(PalidorFlowManagerExtension)
+        .install(PalidorPixiExtension)
+        .configure(new ContextView((<any>this.renderer).plugins.interaction))
+        .configure(new PixiRootContainer(this.stage))
+        .configure(GameConfig, ViewsConfig, PalidorConfig)
             .initialize();
 
         let loader = PIXI.loader
@@ -38,9 +38,6 @@ class Main {
             .add(AtlasKeys.BG_IMAGE)
             .add(AtlasKeys.BG_POPUP_IMAGE)
             .load(this.onLoad);
-
-
-        this.stage.addChild(new PixiContainer());
 
         document.body.appendChild(this.renderer.view);
     }

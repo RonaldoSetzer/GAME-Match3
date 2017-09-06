@@ -3,20 +3,20 @@ import { GameService } from "./../services/GameService";
 import { FlowService } from "./../services/FlowService";
 import { YouWinPopup } from "./../views/YouWinPopup";
 
-import { injectable, inject } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class YouWinPopupMediator extends Mediator<YouWinPopup> {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     public initialize(): void {
         this.view.createStars(this.levelModel.numStars);

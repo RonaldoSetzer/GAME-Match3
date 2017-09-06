@@ -4,22 +4,22 @@ import { GameService } from "./../../services/GameService";
 import { FlowService } from "./../../services/FlowService";
 import { LevelsRepository } from "./../utils/LevelRepository";
 
-import { injectable, inject, ICommand } from "robotlegs";
+import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class GameOverCommand implements ICommand {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     @inject(LevelsRepository)
-    public levelsRepository: LevelsRepository;
+    private levelsRepository: LevelsRepository;
 
     public execute(): void {
         this.gameService.pause();

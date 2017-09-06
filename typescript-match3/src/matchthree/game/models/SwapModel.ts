@@ -1,6 +1,6 @@
 import { Tile } from "./Tile";
 import { TouchPhase } from "./TouchPhase";
-import { injectable } from "robotlegs";
+import { injectable } from "@robotlegsjs/core";
 
 @injectable()
 export class SwapModel {

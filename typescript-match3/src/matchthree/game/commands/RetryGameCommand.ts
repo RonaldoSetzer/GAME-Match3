@@ -3,22 +3,22 @@ import { LevelModel } from "./../models/LevelModel";
 import { GameService } from "./../../services/GameService";
 import { FlowService } from "./../../services/FlowService";
 
-import { injectable, inject, ICommand } from "robotlegs";
+import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class RetryGameCommand implements ICommand {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameManager)
-    public gameManager: GameManager;
+    private gameManager: GameManager;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     public execute(): void {
         this.gameService.clearGridField();

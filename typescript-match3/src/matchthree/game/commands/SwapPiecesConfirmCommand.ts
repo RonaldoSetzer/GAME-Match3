@@ -3,19 +3,19 @@ import { GameStatus } from "./../models/GameStatus";
 import { LevelInfo } from "./../models/LevelInfo";
 import { LevelModel } from "./../models/LevelModel";
 import { GameService } from "./../../services/GameService";
-import { injectable, inject, ICommand } from "robotlegs";
+import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class SwapPiecesConfirmCommand implements ICommand {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameStatus)
-    public gameStatus: GameStatus;
+    private gameStatus: GameStatus;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     public execute(): void {
         if (this.levelModel.levelInfo.levelType === LevelInfo.TIMER_TYPE) {

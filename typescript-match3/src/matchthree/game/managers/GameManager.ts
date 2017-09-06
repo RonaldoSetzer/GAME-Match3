@@ -9,22 +9,22 @@ import { PieceType } from "./../utils/PieceType";
 import { PieceUtils } from "./../utils/PieceUtils";
 import { PowerUpUtils } from "./../utils/PowerUpUtils";
 
-import { injectable, inject } from "robotlegs";
+import { injectable, inject } from "@robotlegsjs/core";
 
 @injectable()
 export class GameManager {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameStatus)
-    public gameStatus: GameStatus;
+    private gameStatus: GameStatus;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(SwapModel)
-    public swapModel: SwapModel;
+    private swapModel: SwapModel;
 
     private _grid: GridData;
 

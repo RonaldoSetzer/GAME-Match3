@@ -1,14 +1,14 @@
 import { FlowService } from "./../services/FlowService";
 import { OptionsView } from "./../views/OptionsView";
 
-import { injectable, inject, EventDispatcher } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject, EventDispatcher } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class OptionsViewMediator extends Mediator<OptionsView> {
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     public initialize(): void {
         this.eventMap.mapListener(this.view.backButton, "click", this.backButton_onClick, this);

@@ -2,19 +2,19 @@ import { GameEvent } from "./../../events/GameEvent";
 import { TouchPhase } from "./../models/TouchPhase";
 import { SwapModel } from "./../models/SwapModel";
 import { GameManager } from "./../managers/GameManager";
-import { injectable, inject, ICommand } from "robotlegs";
+import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class SwapPiecesCommand implements ICommand {
 
     @inject(SwapModel)
-    public swapModel: SwapModel;
+    private swapModel: SwapModel;
 
     @inject(GameManager)
-    public gameManager: GameManager;
+    private gameManager: GameManager;
 
     @inject(GameEvent)
-    public gameEvent: GameEvent;
+    private gameEvent: GameEvent;
 
     public execute(): void {
         this.swapModel.status = SwapModel.WAIT;
@@ -22,7 +22,7 @@ export class SwapPiecesCommand implements ICommand {
 
         if (this.gameEvent.extra.phase === TouchPhase.ENDED) {
             this.swapModel.status = SwapModel.SWAP;
-            this.gameManager.nextStep();
+            this.gameManager.nextStep.bind(this)();
         }
     }
 }

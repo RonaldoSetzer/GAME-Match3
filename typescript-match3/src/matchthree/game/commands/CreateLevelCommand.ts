@@ -5,28 +5,28 @@ import { GameService } from "./../../services/GameService";
 import { FlowService } from "./../../services/FlowService";
 import { LevelsRepository } from "./../utils/LevelRepository";
 
-import { injectable, inject, ICommand } from "robotlegs";
+import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class CreateLevelCommand implements ICommand {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameManager)
-    public gameManager: GameManager;
+    private gameManager: GameManager;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     @inject(FlowService)
-    public flowService: FlowService;
+    private flowService: FlowService;
 
     @inject(GameEvent)
-    public gameEvent: GameEvent;
+    private gameEvent: GameEvent;
 
     @inject(LevelsRepository)
-    public levelsRepository: LevelsRepository;
+    private levelsRepository: LevelsRepository;
 
     public execute(): void {
         this.levelModel.levelId = this.gameEvent.extra.levelId;

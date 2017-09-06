@@ -12,20 +12,20 @@ import { PixiSpritePool } from "../game/utils/PieceDisplayPool";
 import { GridFieldComponent } from "./../views/components/GridFieldComponent";
 
 import { TweenLite, TimelineLite } from "gsap";
-import { injectable, inject } from "robotlegs";
-import { Mediator } from "robotlegs-pixi";
+import { injectable, inject } from "@robotlegsjs/core";
+import { Mediator } from "@robotlegsjs/pixi";
 
 @injectable()
 export class GridFieldComponentMediator extends Mediator<GridFieldComponent> {
 
     @inject(LevelModel)
-    public levelModel: LevelModel;
+    private levelModel: LevelModel;
 
     @inject(GameManager)
-    public gameManager: GameManager;
+    private gameManager: GameManager;
 
     @inject(GameService)
-    public gameService: GameService;
+    private gameService: GameService;
 
     private _displays: Map<PieceData, Sprite>;
 

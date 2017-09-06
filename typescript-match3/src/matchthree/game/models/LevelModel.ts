@@ -3,7 +3,7 @@ import { LevelInfo } from "./LevelInfo";
 import { PieceType } from "./../utils/PieceType";
 import { PieceUtils } from "./../utils/PieceUtils";
 
-import { injectable } from "robotlegs";
+import { injectable } from "@robotlegsjs/core";
 
 @injectable()
 export class LevelModel {

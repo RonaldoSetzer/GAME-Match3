@@ -1,16 +1,16 @@
 import { GameStatus } from "./../game/models/GameStatus";
 import { GameEvent } from "./../events/GameEvent";
 
-import { injectable, inject, IEventDispatcher, EventDispatcher } from "robotlegs";
+import { injectable, inject, IEventDispatcher, EventDispatcher } from "@robotlegsjs/core";
 
 @injectable()
 export class GameService {
 
     @inject(IEventDispatcher)
-    public eventDispatcher: IEventDispatcher;
+    private eventDispatcher: IEventDispatcher;
 
     @inject(GameStatus)
-    public gameStatus: GameStatus;
+    private gameStatus: GameStatus;
 
     // Commands
     public createLevel(levelId: number): void {
