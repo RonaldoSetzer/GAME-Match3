@@ -1,20 +1,15 @@
+import { ICommand, inject, injectable } from "@robotlegsjs/core";
+
 import { GameEvent } from "./../../events/GameEvent";
-import { TouchPhase } from "./../models/TouchPhase";
-import { SwapModel } from "./../models/SwapModel";
 import { GameManager } from "./../managers/GameManager";
-import { injectable, inject, ICommand } from "@robotlegsjs/core";
+import { SwapModel } from "./../models/SwapModel";
+import { TouchPhase } from "./../models/TouchPhase";
 
 @injectable()
 export class SwapPiecesCommand implements ICommand {
-
-    @inject(SwapModel)
-    private swapModel: SwapModel;
-
-    @inject(GameManager)
-    private gameManager: GameManager;
-
-    @inject(GameEvent)
-    private gameEvent: GameEvent;
+    @inject(SwapModel) private swapModel: SwapModel;
+    @inject(GameManager) private gameManager: GameManager;
+    @inject(GameEvent) private gameEvent: GameEvent;
 
     public execute(): void {
         this.swapModel.status = SwapModel.WAIT;

@@ -1,5 +1,4 @@
 export class PieceIds {
-
     public static EMPTY = 0;
 
     public static BLUE = 1;
@@ -11,7 +10,12 @@ export class PieceIds {
 
     public static RAINBOW = 7;
 
-    public static ALL_NORMAL_IDS: Array<number> = [
-        PieceIds.BLUE, PieceIds.ORANGE, PieceIds.GREEN, PieceIds.YELLOW, PieceIds.PINK, PieceIds.LIGHT_BLUE
+    public static ALL_NORMAL_IDS: number[] = [
+        PieceIds.BLUE,
+        PieceIds.ORANGE,
+        PieceIds.GREEN,
+        PieceIds.YELLOW,
+        PieceIds.PINK,
+        PieceIds.LIGHT_BLUE
     ];
 }

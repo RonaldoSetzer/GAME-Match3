@@ -1,32 +1,20 @@
+import { ICommand, inject, injectable } from "@robotlegsjs/core";
+
 import { GameEvent } from "./../../events/GameEvent";
+import { FlowService } from "./../../services/FlowService";
+import { GameService } from "./../../services/GameService";
 import { GameManager } from "./../managers/GameManager";
 import { LevelModel } from "./../models/LevelModel";
-import { GameService } from "./../../services/GameService";
-import { FlowService } from "./../../services/FlowService";
 import { LevelsRepository } from "./../utils/LevelRepository";
-
-import { injectable, inject, ICommand } from "@robotlegsjs/core";
 
 @injectable()
 export class CreateLevelCommand implements ICommand {
-
-    @inject(LevelModel)
-    private levelModel: LevelModel;
-
-    @inject(GameManager)
-    private gameManager: GameManager;
-
-    @inject(GameService)
-    private gameService: GameService;
-
-    @inject(FlowService)
-    private flowService: FlowService;
-
-    @inject(GameEvent)
-    private gameEvent: GameEvent;
-
-    @inject(LevelsRepository)
-    private levelsRepository: LevelsRepository;
+    @inject(LevelModel) private levelModel: LevelModel;
+    @inject(GameManager) private gameManager: GameManager;
+    @inject(GameService) private gameService: GameService;
+    @inject(FlowService) private flowService: FlowService;
+    @inject(GameEvent) private gameEvent: GameEvent;
+    @inject(LevelsRepository) private levelsRepository: LevelsRepository;
 
     public execute(): void {
         this.levelModel.levelId = this.gameEvent.extra.levelId;

@@ -1,25 +1,17 @@
-import { ScoreUtils } from "./../utils/ScoreUtils";
-import { LevelModel } from "./../models/LevelModel";
-import { GameService } from "./../../services/GameService";
-import { FlowService } from "./../../services/FlowService";
-import { LevelsRepository } from "./../utils/LevelRepository";
+import { ICommand, inject, injectable } from "@robotlegsjs/core";
 
-import { injectable, inject, ICommand } from "@robotlegsjs/core";
+import { FlowService } from "./../../services/FlowService";
+import { GameService } from "./../../services/GameService";
+import { LevelModel } from "./../models/LevelModel";
+import { LevelsRepository } from "./../utils/LevelRepository";
+import { ScoreUtils } from "./../utils/ScoreUtils";
 
 @injectable()
 export class GameOverCommand implements ICommand {
-
-    @inject(LevelModel)
-    private levelModel: LevelModel;
-
-    @inject(GameService)
-    private gameService: GameService;
-
-    @inject(FlowService)
-    private flowService: FlowService;
-
-    @inject(LevelsRepository)
-    private levelsRepository: LevelsRepository;
+    @inject(LevelModel) private levelModel: LevelModel;
+    @inject(GameService) private gameService: GameService;
+    @inject(FlowService) private flowService: FlowService;
+    @inject(LevelsRepository) private levelsRepository: LevelsRepository;
 
     public execute(): void {
         this.gameService.pause();
@@ -29,7 +21,7 @@ export class GameOverCommand implements ICommand {
         this.levelsRepository.updateHiScore(this.levelModel.levelId, hiScore);
         // SharedObjectManager.updateHighScore();
 
-        let stars = ScoreUtils.getNumStars(this.levelModel.score, this.levelModel.levelInfo.scoreStarts);
+        const stars = ScoreUtils.getNumStars(this.levelModel.score, this.levelModel.levelInfo.scoreStarts);
 
         this.levelModel.numStars = stars;
 

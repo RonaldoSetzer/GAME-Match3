@@ -1,5 +1,4 @@
 export class Tile {
-
     public static TILE_WIDTH = 36;
     public static TILE_HEIGHT = 36;
 

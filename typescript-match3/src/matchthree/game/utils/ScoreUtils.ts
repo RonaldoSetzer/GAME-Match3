@@ -1,9 +1,8 @@
 export class ScoreUtils {
-
-    public static getNumStars(score: number, scoreStarts: number[]): number {
+    public static getNumStars(score: number, scoreStars: number[]): number {
         let numStars = 0;
-        for (let i = 0; i < scoreStarts.length; i++) {
-            if (score >= scoreStarts[i]) {
+        for (const scoreStar of scoreStars) {
+            if (score >= scoreStar) {
                 numStars++;
             }
         }

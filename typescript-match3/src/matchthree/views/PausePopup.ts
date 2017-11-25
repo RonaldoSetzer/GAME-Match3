@@ -1,26 +1,22 @@
-import { IconButton } from "./components/IconButton";
+import { Container } from "pixi.js";
 
 import { AtlasKeys } from "./../utils/AtlasKeys";
 import { MagicValues } from "./../utils/MagicValues";
 import { PixiFactory } from "./../utils/PixiFactory";
 import { Texts } from "./../utils/Texts";
 import { ViewPortSize } from "./../utils/ViewPortSize";
-
-import { Container, Text } from "pixi.js";
+import { IconButton } from "./components/IconButton";
 
 export class PausePopup extends Container {
-
     private _levelSelectButton: IconButton;
+    private _resumeButton: IconButton;
+    private _retryButton: IconButton;
     public get levelSelectButton(): IconButton {
         return this._levelSelectButton;
     }
-
-    private _resumeButton: IconButton;
     public get resumeButton(): IconButton {
         return this._resumeButton;
     }
-
-    private _retryButton: IconButton;
     public get retryButton(): IconButton {
         return this._retryButton;
     }
@@ -34,14 +30,12 @@ export class PausePopup extends Container {
         this.setupButtons();
         this.setupText();
     }
-
     private setupBackgrounds(): void {
-        this.addChild(PixiFactory.getShadowBackground(.9));
+        this.addChild(PixiFactory.getShadowBackground(0.9));
     }
-
     private setupButtons(): void {
         this._levelSelectButton = PixiFactory.getIconButton(AtlasKeys.ICON_LEVEL_SELECT);
-        this._levelSelectButton.x = ViewPortSize.HALF_WIDTH + this._levelSelectButton.width * .5 + 4;
+        this._levelSelectButton.x = ViewPortSize.HALF_WIDTH + this._levelSelectButton.width * 0.5 + 4;
         this._levelSelectButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
         this.addChild(this._levelSelectButton);
 
@@ -51,13 +45,11 @@ export class PausePopup extends Container {
         this.addChild(this._resumeButton);
 
         this._retryButton = PixiFactory.getIconButton(AtlasKeys.ICON_RETRY);
-        this._retryButton.x = ViewPortSize.HALF_WIDTH - this._retryButton.width * .5 - 4;
+        this._retryButton.x = ViewPortSize.HALF_WIDTH - this._retryButton.width * 0.5 - 4;
         this._retryButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
         this.addChild(this._retryButton);
-
     }
-
     private setupText(): void {
-        this.addChild(PixiFactory.getTitle(Texts.PAUSED ));
+        this.addChild(PixiFactory.getTitle(Texts.PAUSED));
     }
 }

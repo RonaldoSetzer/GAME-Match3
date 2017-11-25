@@ -4,7 +4,11 @@
   "description": "OpenSource Game",
   "main": "src/index.ts",
   "scripts": {
+    "autoformat": "prettier --config .prettierrc --write {src,test}/**/*.ts",
     "start": "webpack-dev-server --config ./webpack.setzer.config.js",
+    "clean": "rimraf coverage",
+    "lint": "tslint-config-prettier-check ./tslint.json",
+    "prepush": "npm run clean && npm run autoformat && npm run lint",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "karma": "karma start"
   },
@@ -19,6 +23,7 @@
     "@robotlegsjs/pixi-palidor": "^0.1.1",
     "gsap": "^1.20.3",
     "pixi.js": "^4.6.1",
+    "prettier": "^1.8.2",
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {

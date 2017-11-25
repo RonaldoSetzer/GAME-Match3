@@ -1,15 +1,15 @@
-import { Texts } from "./../utils/Texts";
+import { Container } from "pixi.js";
+
 import { AtlasKeys } from "./../utils/AtlasKeys";
 import { MagicValues } from "./../utils/MagicValues";
-import { ViewPortSize } from "./../utils/ViewPortSize";
 import { PixiFactory } from "./../utils/PixiFactory";
+import { Texts } from "./../utils/Texts";
+import { ViewPortSize } from "./../utils/ViewPortSize";
 import { IconButton } from "./components/IconButton";
-import { Container } from "pixi.js";
 
 export class OptionsView extends Container {
     private _deleteButton: IconButton;
     private _backButton: IconButton;
-
     public get deleteButton(): IconButton {
         return this._deleteButton;
     }
@@ -24,21 +24,18 @@ export class OptionsView extends Container {
         this.createTexts();
         this.createButtons();
     }
-
     private createBackgrounds(): void {
         this.addChild(PixiFactory.getBackground());
         this.addChild(PixiFactory.getBackgroundPopup());
     }
-
     private createTexts(): void {
         this.addChild(PixiFactory.getTitle(Texts.OPTIONS));
 
-        let hiScore: Container = PixiFactory.getText(Texts.HI_SCORE);
+        const hiScore: Container = PixiFactory.getText(Texts.HI_SCORE);
         hiScore.x = MagicValues.BORDER_OFFSET_POPUP;
         hiScore.y = 180;
         this.addChild(hiScore);
     }
-
     private createButtons(): void {
         this._deleteButton = PixiFactory.getIconButton(AtlasKeys.ICON_DELETE, IconButton.TYPE_SMALL_DANGER);
         this._deleteButton.x = ViewPortSize.MAX_WIDTH - MagicValues.BORDER_OFFSET_POPUP - 25;
@@ -50,5 +47,4 @@ export class OptionsView extends Container {
         this._backButton.y = ViewPortSize.MAX_HEIGHT - MagicValues.BORDER_OFFSET_BOTTOM;
         this.addChild(this._backButton);
     }
-
 }

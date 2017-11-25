@@ -1,27 +1,23 @@
 import { injectable } from "@robotlegsjs/core";
+
 import { LevelInfo } from "./../models/LevelInfo";
 
 @injectable()
 export class LevelsRepository {
-
-    private levels: Array<LevelInfo>;
+    private levels: LevelInfo[];
 
     constructor() {
         this.setupLevels();
     }
-
     public getLevelInfoById(levelId: number): LevelInfo {
         return this.levels[levelId] || this.levels[0];
     }
-
     public updateHiScore(levelId: number, hiScore: number): void {
         this.getLevelInfoById(levelId).hiScore = hiScore;
     }
-
-    public getLevels(): Array<LevelInfo> {
+    public getLevels(): LevelInfo[] {
         return this.levels;
     }
-
     private setupLevels() {
         this.levels = new Array<LevelInfo>();
         this.levels.push(new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10)); // 35

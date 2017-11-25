@@ -1,5 +1,4 @@
 export class PieceType {
-
     public static EMPTY = "empty";
 
     public static NORMAL = "normal";

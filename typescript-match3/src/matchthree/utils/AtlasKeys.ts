@@ -2,7 +2,6 @@ import { PieceUtils } from "../game/utils/PieceUtils";
 import { Texture } from "pixi.js";
 
 export class AtlasKeys {
-
     public static ATLAS_XML = "./assets/matchthree-pixijs-atlas.json";
     public static ATLAS_PNG = "./assets/matchthree-pixijs-atlas.png";
 
@@ -50,7 +49,6 @@ export class AtlasKeys {
     public static update(textureCache: any): void {
         this.textureCache = textureCache;
     }
-
     public static getTexture(atlasKey): Texture {
         return this.textureCache[atlasKey];
     }
