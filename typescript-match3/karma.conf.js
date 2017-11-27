@@ -1,5 +1,5 @@
 process.env.TEST = true;
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";
 
 const webpack = require("webpack");
 const path = require("path");
@@ -7,21 +7,15 @@ const webpackConfig = require("./webpack.config.js");
 
 delete webpackConfig.entry;
 
-module.exports = function (config) {
-
+module.exports = function(config) {
   var configuration = {
     basePath: "",
-    frameworks: [
-      "mocha",
-      "chai",
-      "sinon",
-      "es6-shim"
-    ],
+    frameworks: ["mocha", "chai", "sinon", "es6-shim"],
     files: [
       "./test/entry.test.ts",
       "./test/**/**/**.test.ts",
       {
-        pattern: '**/*.map',
+        pattern: "**/*.map",
         served: true,
         included: false,
         watched: true
@@ -43,15 +37,11 @@ module.exports = function (config) {
       "karma-mocha-reporter",
       "karma-mocha",
       "karma-chai",
-      "karma-sinon" ,
+      "karma-sinon",
       "karma-es6-shim",
       "karma-coverage-istanbul-reporter"
     ],
-    reporters: (
-      config.singleRun ?
-      ["dots", "mocha" , "coverage-istanbul" ] :
-      ["dots", "mocha"]
-    ),
+    reporters: config.singleRun ? ["mocha", "coverage-istanbul"] : ["mocha"],
     coverageIstanbulReporter: {
       reports: ["html", "lcov", "lcovonly", "text-summary"],
       dir: "coverage",
@@ -66,10 +56,10 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome']
+    browsers: ["Chrome"]
   };
 
-  configuration.browsers = ['PhantomJS'];
+  configuration.browsers = ["PhantomJS"];
   configuration.plugins.push("karma-phantomjs-launcher");
 
   config.set(configuration);

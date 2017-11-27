@@ -1,11 +1,11 @@
-import { SwapModel } from "./../../../../src/matchthree/game/models/SwapModel";
-import { TouchPhase } from "./../../../../src/matchthree/game/models/TouchPhase";
 import { assert } from "chai";
 
-describe("SwapModel", () => {
+import { SwapModel } from "./../../../../src/matchthree/game/models/SwapModel";
+import { TouchPhase } from "./../../../../src/matchthree/game/models/TouchPhase";
 
-    let maxCols = 5;
-    let maxRows = 7;
+describe("SwapModel", () => {
+    const maxCols = 5;
+    const maxRows = 7;
     let swapModel: SwapModel;
 
     beforeEach(() => {
@@ -18,9 +18,9 @@ describe("SwapModel", () => {
     });
 
     it("SetPosition", () => {
-        let row = 2;
-        let col1 = 1;
-        let col2 = 2;
+        const row = 2;
+        const col1 = 1;
+        const col2 = 2;
 
         swapModel.setPosition(TouchPhase.BEGAN, col1, row);
         swapModel.setPosition(TouchPhase.ENDED, col2, row);
@@ -33,9 +33,9 @@ describe("SwapModel", () => {
     });
 
     it("SwapDirection: When the movement is Horizontal", () => {
-        let row = 2;
-        let col1 = 1;
-        let col2 = 2;
+        const row = 2;
+        const col1 = 1;
+        const col2 = 2;
 
         swapModel.setPosition(TouchPhase.BEGAN, col1, row);
         swapModel.setPosition(TouchPhase.ENDED, col2, row);
@@ -44,9 +44,9 @@ describe("SwapModel", () => {
     });
 
     it("SwapDirection: When the movement is Vertical", () => {
-        let col = 2;
-        let row1 = 1;
-        let row2 = 2;
+        const col = 2;
+        const row1 = 1;
+        const row2 = 2;
 
         swapModel.setPosition(TouchPhase.BEGAN, col, row1);
         swapModel.setPosition(TouchPhase.ENDED, col, row2);
@@ -76,11 +76,11 @@ describe("SwapModel", () => {
     });
 
     it("SolveRanger", () => {
-        let row1 = 2;
-        let col1 = 4;
+        const row1 = 2;
+        const col1 = 4;
 
-        let row2 = 1;
-        let col2 = 2;
+        const row2 = 1;
+        const col2 = 2;
 
         swapModel.setPosition(TouchPhase.BEGAN, col1, row1);
         swapModel.setPosition(TouchPhase.ENDED, col2, row2);
@@ -93,11 +93,11 @@ describe("SwapModel", () => {
     });
 
     it("SolveRanger: When the Values are more and less the max sizes", () => {
-        let row1 = -3;
-        let col1 = 80;
+        const row1 = -3;
+        const col1 = 80;
 
-        let row2 = 30;
-        let col2 = -1;
+        const row2 = 30;
+        const col2 = -1;
 
         swapModel.setPosition(TouchPhase.BEGAN, col1, row1);
         swapModel.setPosition(TouchPhase.ENDED, col2, row2);

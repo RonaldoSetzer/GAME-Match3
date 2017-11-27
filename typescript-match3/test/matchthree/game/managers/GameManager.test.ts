@@ -1,25 +1,25 @@
+import { assert } from "chai";
+import { EventDispatcher } from "@robotlegsjs/core";
 import sinon = require("sinon");
+
 import { GameManager } from "./../../../../src/matchthree/game/managers/GameManager";
-import { Tile } from "./../../../../src/matchthree/game/models/Tile";
-import { LevelModel } from "./../../../../src/matchthree/game/models/LevelModel";
 import { GameStatus } from "./../../../../src/matchthree/game/models/GameStatus";
+import { LevelModel } from "./../../../../src/matchthree/game/models/LevelModel";
 import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
 import { SwapModel } from "./../../../../src/matchthree/game/models/SwapModel";
+import { Tile } from "./../../../../src/matchthree/game/models/Tile";
 import { TouchPhase } from "./../../../../src/matchthree/game/models/TouchPhase";
 import { GridUtils } from "./../../../../src/matchthree/game/utils/GridUtils";
 import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
 import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
 import { PieceUtils } from "./../../../../src/matchthree/game/utils/PieceUtils";
 import { GameService } from "./../../../../src/matchthree/services/GameService";
-import { assert } from "chai";
-import { EventDispatcher } from "robotlegs";
 
 describe("GameManager", () => {
-
     let gameManager: GameManager;
 
     beforeEach(() => {
-        let gameStatus: GameStatus = new GameStatus();
+        const gameStatus: GameStatus = new GameStatus();
 
         gameManager = new GameManager();
         gameManager.levelModel = new LevelModel();
@@ -37,8 +37,8 @@ describe("GameManager", () => {
 
     /* CONTEXT: MODIFYING THE GRID */
     it("GenerateGrid", () => {
-        let maxCols = 4;
-        let maxRows = 6;
+        const maxCols = 4;
+        const maxRows = 6;
         gameManager.generateGrid(maxCols, maxRows);
 
         assert.isNotNull(gameManager.grid);
@@ -47,42 +47,32 @@ describe("GameManager", () => {
     });
 
     it("FillStep: Called once", () => {
-        let row = 0;
-        let firstRow: Array<PieceData> = GridUtils.getRow(gameManager.grid, row);
+        const row = 0;
+        const firstRowBefore: PieceData[] = GridUtils.getRow(gameManager.grid, row);
 
         gameManager.fillStep();
 
-        let firstRowAfter: Array<PieceData> = GridUtils.getRow(gameManager.grid, row);
+        const firstRowAfter: PieceData[] = GridUtils.getRow(gameManager.grid, row);
 
-        let wasEmpty = true;
-        let hasPieceAfterFillStep = true;
+        const isEmptyBefore = firstRowBefore.every(e => e.pieceType === PieceType.EMPTY);
+        const isNotEmptyAfter = firstRowAfter.every(e => e.pieceType !== PieceType.EMPTY);
 
-        for (let i = 0; i < gameManager.grid.maxCols; i++) {
-            wasEmpty = (wasEmpty && firstRow[i].pieceType === PieceType.EMPTY);
-            hasPieceAfterFillStep = (hasPieceAfterFillStep && firstRowAfter[i].pieceType !== PieceType.EMPTY);
-        }
-
-        assert.isTrue(wasEmpty);
-        assert.isTrue(hasPieceAfterFillStep);
+        assert.isTrue(isEmptyBefore);
+        assert.isTrue(isNotEmptyAfter);
     });
 
     it("FillStep: Called twice", () => {
-        let row = 0;
+        const row = 0;
         gameManager.fillStep();
 
-        let firstRowBefore: Array<PieceData> = GridUtils.getRow(gameManager.grid, row);
+        const firstRowBefore: PieceData[] = GridUtils.getRow(gameManager.grid, row);
 
         gameManager.fillStep();
 
-        let firstRowAfter: Array<PieceData> = GridUtils.getRow(gameManager.grid, row);
-        let secondRowAfter: Array<PieceData> = GridUtils.getRow(gameManager.grid, row + 1);
-        let firstRowWasDroppedToSecondRow = true;
-        let firstRowAfterIsNotEmpty = true;
-
-        for (let i = 0; i < gameManager.grid.maxCols; i++) {
-            firstRowAfterIsNotEmpty = (firstRowAfterIsNotEmpty && firstRowAfter[i].pieceType !== PieceType.EMPTY);
-            firstRowWasDroppedToSecondRow = (firstRowWasDroppedToSecondRow && (secondRowAfter.indexOf(firstRowBefore[i]) !== -1));
-        }
+        const firstRowAfter: PieceData[] = GridUtils.getRow(gameManager.grid, row);
+        const secondRowAfter: PieceData[] = GridUtils.getRow(gameManager.grid, row + 1);
+        const firstRowAfterIsNotEmpty = firstRowAfter.every(e => e.pieceType !== PieceType.EMPTY);
+        const firstRowWasDroppedToSecondRow = secondRowAfter.every(e => secondRowAfter.indexOf(e) !== -1);
 
         assert.isTrue(firstRowWasDroppedToSecondRow);
         assert.isTrue(firstRowAfterIsNotEmpty);
@@ -93,17 +83,17 @@ describe("GameManager", () => {
         let hasPieceId = true;
         let addedToLevelModel = true;
         let piece: PieceData;
-        let topLine = 0;
+        const topLine = 0;
 
         gameManager.createNewPiecesAbove();
 
         for (let col = 0; col < gameManager.grid.maxCols; col++) {
             piece = gameManager.grid.getPiece(col, topLine);
-            isNotEmpty = (isNotEmpty && (piece.pieceType !== PieceType.EMPTY));
+            isNotEmpty = isNotEmpty && piece.pieceType !== PieceType.EMPTY;
 
             if (piece.pieceType === PieceType.NORMAL) {
-                hasPieceId = (hasPieceId && (piece.pieceId !== undefined));
-                addedToLevelModel = (addedToLevelModel && (gameManager.levelModel.pieces.indexOf(piece) !== -1));
+                hasPieceId = hasPieceId && piece.pieceId !== undefined;
+                addedToLevelModel = addedToLevelModel && gameManager.levelModel.pieces.indexOf(piece) !== -1;
             }
         }
 
@@ -113,7 +103,7 @@ describe("GameManager", () => {
     });
 
     it("CreatePowerUp", () => {
-        let powerUp: PieceData = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.COL, PieceIds.YELLOW);
+        const powerUp: PieceData = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.COL, PieceIds.YELLOW);
         gameManager.createPowerUp(powerUp);
 
         assert.equal(powerUp, gameManager.grid.getPiece(powerUp.col, powerUp.row));
@@ -122,7 +112,7 @@ describe("GameManager", () => {
     });
 
     it("DropPieces", () => {
-        let firstLine: Array<PieceData> = new Array<PieceData>();
+        const firstLine: PieceData[] = new Array<PieceData>();
         let piece: PieceData;
         let result = true;
 
@@ -134,10 +124,10 @@ describe("GameManager", () => {
 
         gameManager.dropPieces();
 
-        let secondLine: Array<PieceData> = GridUtils.getRow(gameManager.grid, 1);
+        const secondLine: PieceData[] = GridUtils.getRow(gameManager.grid, 1);
 
-        for (let i = 0; i < firstLine.length; i++) {
-            result = (result && (secondLine.indexOf(firstLine[i]) !== -1));
+        for (const line of firstLine) {
+            result = result && secondLine.indexOf(line) !== -1;
         }
 
         assert.isTrue(result);
@@ -146,9 +136,9 @@ describe("GameManager", () => {
     /* CONTEXT: REMOVING PIECES*/
 
     it("RemovePiece", () => {
-        let col = 3;
-        let row = 2;
-        let piece: PieceData = new PieceData(col, row, PieceType.NORMAL, PieceIds.BLUE);
+        const col = 3;
+        const row = 2;
+        const piece: PieceData = new PieceData(col, row, PieceType.NORMAL, PieceIds.BLUE);
 
         gameManager.grid.setPiece(piece);
         gameManager.removePiece(piece);
@@ -158,7 +148,7 @@ describe("GameManager", () => {
     });
 
     it("RemovePiece: Remove a piece and increase Score", () => {
-        let piece: PieceData = new PieceData(3, 2, PieceType.NORMAL, PieceIds.BLUE);
+        const piece: PieceData = new PieceData(3, 2, PieceType.NORMAL, PieceIds.BLUE);
 
         gameManager.grid.setPiece(piece);
         gameManager.removePiece(piece);
@@ -167,7 +157,7 @@ describe("GameManager", () => {
     });
 
     it("RemovePiecesInList", () => {
-        let pieces: Array<PieceData> = new Array<PieceData>();
+        const pieces: PieceData[] = new Array<PieceData>();
         pieces.push(new PieceData(1, 6, PieceType.NORMAL, PieceIds.BLUE));
         pieces.push(new PieceData(2, 5, PieceType.NORMAL, PieceIds.GREEN));
         pieces.push(new PieceData(3, 4, PieceType.NORMAL, PieceIds.ORANGE));
@@ -175,27 +165,25 @@ describe("GameManager", () => {
         pieces.push(new PieceData(5, 2, PieceType.NORMAL, PieceIds.LIGHT_BLUE));
         pieces.push(new PieceData(6, 1, PieceType.NORMAL, PieceIds.YELLOW));
 
-        for (let i = 0; i < pieces.length; i++) {
-            gameManager.grid.setPiece(pieces[i]);
+        for (const piece of pieces) {
+            gameManager.grid.setPiece(piece);
         }
         gameManager.removePiecesInList(pieces);
 
         let isEmpty = true;
         let isInToRemoveList = true;
-        let piece: PieceData;
 
-        for (let i = 0; i < pieces.length; i++) {
-            piece = pieces[i];
-
-            isInToRemoveList = (isInToRemoveList && (gameManager.levelModel.toRemove.indexOf(piece) !== -1));
-            isEmpty = (isEmpty && (PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType));
+        for (const piece of pieces) {
+            isInToRemoveList = isInToRemoveList && gameManager.levelModel.toRemove.indexOf(piece) !== -1;
+            isEmpty = isEmpty && PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType;
         }
         assert.isTrue(isInToRemoveList);
         assert.isTrue(isEmpty);
     });
 
     it("RemoveAllChains", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 2, 3, 1, 2, 3, 1, 2], //  [1              ]
             [1, 4, 4, 4, 3, 6, 2, 3], //  [1 4 4 4   6    ]
             [1, 1, 1, 3, 1, 6, 3, 2], //  [1 1 1     6    ]
@@ -208,18 +196,19 @@ describe("GameManager", () => {
 
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let numAllChainsBefore: number = GridUtils.getAllChains(gameManager.grid).length;
+        const numAllChainsBefore: number = GridUtils.getAllChains(gameManager.grid).length;
 
         gameManager.removeAllChains();
 
-        let numAllChainsAfter: number = GridUtils.getAllChains(gameManager.grid).length;
+        const numAllChainsAfter: number = GridUtils.getAllChains(gameManager.grid).length;
 
         assert.isTrue(numAllChainsBefore > 0);
         assert.isTrue(numAllChainsAfter === 0);
     });
 
     it("RemoveAllChains: Remove all chains in the list (params)", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [4, 2, 3, 1, 2, 3, 1, 2], // [               ]
             [1, 4, 4, 4, 3, 4, 2, 3], // [1 4 4 4        ]
             [1, 1, 1, 3, 1, 6, 3, 2], // [1 1 1     6    ]
@@ -234,14 +223,15 @@ describe("GameManager", () => {
 
         gameManager.removeAllChains(GridUtils.getAllChains(gameManager.grid));
 
-        let numChains: number = GridUtils.getAllChains(gameManager.grid).length;
+        const numChains: number = GridUtils.getAllChains(gameManager.grid).length;
 
         assert.isTrue(numChains === 0);
         assert.isTrue(gameManager.levelModel.toAdd.length === 0);
     });
 
     it("RemoveAllChains: Remove all chains and applies the PowerUpRow effect", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [6, 2, 3, 1, 2, 3, 1, 2], // [6              ]
             [6, 4, 4, 4, 3, 6, 2, 3], // [6 4  4 4   6    ]
             [6, 1, 1, 1, 2, 6, 3, 2], // [6 1 R1 1   6    ]
@@ -254,23 +244,20 @@ describe("GameManager", () => {
 
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let row = 2;
-        let powerUp: PieceData = PieceUtils.getNewPowerUpPiece(2, row, PieceType.ROW, PieceIds.BLUE);
+        const row = 2;
+        const powerUp: PieceData = PieceUtils.getNewPowerUpPiece(2, row, PieceType.ROW, PieceIds.BLUE);
 
         gameManager.grid.setPiece(powerUp);
         gameManager.removeAllChains();
 
-        let rowWithPowerUpEffect: Array<PieceData> = GridUtils.getRow(gameManager.grid, row);
-        let isAllPiecesEmpty = true;
-        for (let i = 0; i < rowWithPowerUpEffect.length; i++) {
-            isAllPiecesEmpty = (isAllPiecesEmpty && (rowWithPowerUpEffect[i].pieceType === PieceType.EMPTY));
+        const result = GridUtils.getRow(gameManager.grid, row).every(e => e.pieceType === PieceType.EMPTY);
 
-        }
-        assert.isTrue(isAllPiecesEmpty);
+        assert.isTrue(result);
     });
 
     it("RemoveAllChains: Remove all chains and applies the PowerUpCol effect", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [6, 2, 3, 1, 2, 3, 1, 2], // [C6              ]
             [6, 4, 4, 4, 3, 6, 2, 3], // [ 6 4 4 4   6    ]
             [6, 1, 1, 1, 2, 6, 3, 2], // [ 6 1 1 1   6    ]
@@ -283,23 +270,19 @@ describe("GameManager", () => {
 
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let col = 0;
-        let powerUp: PieceData = PieceUtils.getNewPowerUpPiece(col, 0, PieceType.COL, PieceIds.LIGHT_BLUE);
+        const col = 0;
+        const powerUp: PieceData = PieceUtils.getNewPowerUpPiece(col, 0, PieceType.COL, PieceIds.LIGHT_BLUE);
 
         gameManager.grid.setPiece(powerUp);
         gameManager.removeAllChains();
 
-        let colWithPowerUpEffect: Array<PieceData> = GridUtils.getCol(gameManager.grid, col);
-        let isAllPiecesEmpty = true;
-        for (let i = 0; i < colWithPowerUpEffect.length; i++) {
-            isAllPiecesEmpty = (isAllPiecesEmpty && (colWithPowerUpEffect[i].pieceType === PieceType.EMPTY));
-
-        }
-        assert.isTrue(isAllPiecesEmpty);
+        const isAllEmpty = GridUtils.getCol(gameManager.grid, col).every(e => e.pieceType === PieceType.EMPTY);
+        assert.isTrue(isAllEmpty);
     });
 
     it("RemoveAllChains: Remove all chains and applies the PowerUpRainbow effect (Cross)", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [6, 2, 3, 1, 2, 3, 1, 2], // [6              ]
             [6, 4, 4, 4, 3, 6, 2, 3], // [6 4 4 4   6    ]
             [6, 1, 1, 1, 2, 6, 3, 2], // [6 1 1 1   6    ]
@@ -307,34 +290,31 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 5, 5, 1, 2], // [      5 5 5    ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
 
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let col = 4;
-        let row = 2;
+        const col = 4;
+        const row = 2;
 
-        let powerUpRainbow: PieceData = PieceUtils.getNewPowerUpPiece(col, row, PieceType.RAINBOW, PieceIds.RAINBOW);
+        const powerUpRainbow: PieceData = PieceUtils.getNewPowerUpPiece(col, row, PieceType.RAINBOW, PieceIds.RAINBOW);
         gameManager.grid.setPiece(powerUpRainbow);
 
-        let powerUpRow: PieceData = PieceUtils.getNewPowerUpPiece(col - 1, row, PieceType.ROW, PieceIds.BLUE);
+        const powerUpRow: PieceData = PieceUtils.getNewPowerUpPiece(col - 1, row, PieceType.ROW, PieceIds.BLUE);
         gameManager.grid.setPiece(powerUpRow);
         gameManager.removeAllChains();
 
-        let isAllPiecesEmpty = true;
-        let colAndRowWithPowerUpEffect: Array<PieceData> = GridUtils.getCol(gameManager.grid, col);
-        colAndRowWithPowerUpEffect = colAndRowWithPowerUpEffect.concat(GridUtils.getRow(gameManager.grid, row));
+        let pieces: PieceData[] = GridUtils.getCol(gameManager.grid, col);
+        pieces = pieces.concat(GridUtils.getRow(gameManager.grid, row));
+        const isAllPiecesEmpty = pieces.every(e => e.pieceType === PieceType.EMPTY);
 
-        for (let i = 0; i < colAndRowWithPowerUpEffect.length; i++) {
-            isAllPiecesEmpty = (isAllPiecesEmpty && (colAndRowWithPowerUpEffect[i].pieceType === PieceType.EMPTY));
-
-        }
         assert.isTrue(isAllPiecesEmpty);
     });
 
     it("RemoveAllChains: Remove all chains and creates a new PowerUp", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [6, 2, 3, 1, 2, 3, 1, 2], // [6              ]
             [6, 4, 4, 4, 3, 6, 2, 3], // [6 4 4 4        ]
             [6, 1, 1, 1, 1, 6, 3, 1], // [6 1 1 1 1      ]
@@ -342,7 +322,7 @@ describe("GameManager", () => {
             [2, 3, 6, 6, 6, 6, 6, 2], // [    6 6 6 6 6  ]
             [3, 1, 2, 5, 5, 2, 2, 1], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 1], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
         // PowerUps
         //    col:1 (Row or Col)
@@ -352,16 +332,16 @@ describe("GameManager", () => {
         GridUtils.generateByMap(gameManager.grid, map);
         gameManager.removeAllChains();
 
-        let numPowerUps = 3;
-        let allPowerUpsLength: number = GridUtils.getAllPowerUps(gameManager.grid).length;
+        const numPowerUps = 3;
+        const allPowerUpsLength: number = GridUtils.getAllPowerUps(gameManager.grid).length;
 
         assert.equal(numPowerUps, allPowerUpsLength);
     });
 
     it("RemovePiecesInList: Remove all pieces in the list and applies the PowerUp effect", () => {
-        let pieces: Array<PieceData> = GridUtils.spawnNewRow(gameManager.grid, 0);
+        const pieces: PieceData[] = GridUtils.spawnNewRow(gameManager.grid, 0);
 
-        let powerUpRow: PieceData = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.ROW, PieceIds.BLUE);
+        const powerUpRow: PieceData = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.ROW, PieceIds.BLUE);
         gameManager.grid.setPiece(powerUpRow);
         pieces[0] = powerUpRow;
 
@@ -369,20 +349,18 @@ describe("GameManager", () => {
 
         let isEmpty = true;
         let isInToRemoveList = true;
-        let piece: PieceData;
 
-        for (let i = 0; i < pieces.length; i++) {
-            piece = pieces[i];
-
-            isInToRemoveList = (isInToRemoveList && (gameManager.levelModel.toRemove.indexOf(piece) !== -1));
-            isEmpty = (isEmpty && PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType);
+        for (const piece of pieces) {
+            isInToRemoveList = isInToRemoveList && gameManager.levelModel.toRemove.indexOf(piece) !== -1;
+            isEmpty = isEmpty && PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType;
         }
         assert.isTrue(isInToRemoveList);
         assert.isTrue(isEmpty);
     });
 
     it("RemoveAllPieces", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 2, 3, 1, 2, 3, 1, 2], // 0
             [1, 4, 4, 4, 3, 6, 2, 3], // 1
             [1, 1, 1, 3, 1, 6, 3, 2], // 2
@@ -390,21 +368,18 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // 4
             [3, 1, 2, 5, 5, 5, 5, 2], // 5
             [1, 2, 3, 1, 2, 3, 1, 2], // 6
-            [2, 3, 1, 2, 3, 1, 2, 3]// 7
+            [2, 3, 1, 2, 3, 1, 2, 3] // 7
         ];
 
         GridUtils.generateByMap(gameManager.grid, map);
 
         gameManager.removeAllPieces();
 
-        let pieces: Array<PieceData> = GridUtils.getAllPieces(gameManager.grid);
+        const pieces: PieceData[] = GridUtils.getAllPieces(gameManager.grid);
         let isEmpty = true;
-        let piece: PieceData;
 
-        for (let i = 0; i < pieces.length; i++) {
-            piece = pieces[i];
-
-            isEmpty = (isEmpty && PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType);
+        for (const piece of pieces) {
+            isEmpty = isEmpty && PieceType.EMPTY === gameManager.grid.getPiece(piece.col, piece.row).pieceType;
         }
         assert.equal(64, pieces.length);
         assert.equal(64, gameManager.levelModel.toRemove.length);
@@ -412,11 +387,11 @@ describe("GameManager", () => {
     });
     /*CONTEXT: SWAPING PIECES*/
     it("SwapSelectedPieces", () => {
-        let piece1col = 1;
-        let piece2col = 2;
-        let row = 1;
-        let piece1: PieceData = PieceUtils.getNewNormalPiece(piece1col, row, PieceIds.YELLOW);
-        let piece2: PieceData = PieceUtils.getNewNormalPiece(piece2col, row, PieceIds.GREEN);
+        const piece1col = 1;
+        const piece2col = 2;
+        const row = 1;
+        const piece1: PieceData = PieceUtils.getNewNormalPiece(piece1col, row, PieceIds.YELLOW);
+        const piece2: PieceData = PieceUtils.getNewNormalPiece(piece2col, row, PieceIds.GREEN);
         gameManager.grid.setPiece(piece1);
         gameManager.grid.setPiece(piece2);
 
@@ -432,12 +407,12 @@ describe("GameManager", () => {
     });
 
     it("SwapSelectedPieces: Trying to swap two no Adjacent pieces", () => {
-        let piece1col = 1;
-        let piece2col = 2;
-        let piece1row = 1;
-        let piece2row = 3;
-        let piece1: PieceData = PieceUtils.getNewNormalPiece(piece1col, piece1row, PieceIds.YELLOW);
-        let piece2: PieceData = PieceUtils.getNewNormalPiece(piece2col, piece2row, PieceIds.GREEN);
+        const piece1col = 1;
+        const piece2col = 2;
+        const piece1row = 1;
+        const piece2row = 3;
+        const piece1: PieceData = PieceUtils.getNewNormalPiece(piece1col, piece1row, PieceIds.YELLOW);
+        const piece2: PieceData = PieceUtils.getNewNormalPiece(piece2col, piece2row, PieceIds.GREEN);
         gameManager.grid.setPiece(piece1);
         gameManager.grid.setPiece(piece2);
 
@@ -452,7 +427,8 @@ describe("GameManager", () => {
     /* CONTEXT: NEXTSTEP BEHAVIOR  */
 
     it("NextStep: Single Swap process", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], // [1 3            ]
             [3, 4, 5, 4, 3, 6, 2, 3], // [3              ]
             [3, 4, 1, 3, 1, 5, 3, 2], // [3              ]
@@ -460,19 +436,19 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.SWAP;
 
-        let spySwapSelectedPieces = sinon.spy(gameManager, "swapSelectedPieces");
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spySwapSelectedPieces = sinon.spy(gameManager, "swapSelectedPieces");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
 
         gameManager.nextStep(gameManager);
         // After the movement of the sprites
@@ -480,13 +456,13 @@ describe("GameManager", () => {
         gameManager.levelModel.toMove.length = 0;
         gameManager.nextStep(gameManager);
 
-
-        assert.isTrue(spySwapSelectedPieces.called, "spySwapSelectedPieces");
-        assert.isTrue(spyAfterSwap.called, "spyAfterSwap");
+        assert.isTrue(spySwapSelectedPieces.calledOnce, "spySwapSelectedPieces");
+        assert.isTrue(spyAfterSwap.calledOnce, "spyAfterSwap");
     });
 
     it("AfterSwap (private): Swapping two pieces and removing the chains", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [3, 1, 1, 1, 2, 3, 1, 2], // [3 1 1 1        ]
             [3, 4, 5, 4, 3, 6, 2, 3], // [3              ]
             [3, 4, 1, 3, 1, 5, 3, 2], // [3              ]
@@ -494,20 +470,20 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -517,7 +493,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap (private): Swapping two pieces and removing a vertical chains", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
@@ -525,21 +502,20 @@ describe("GameManager", () => {
             [4, 5, 4, 3, 6, 2, 3, 4], // [               ]
             [4, 1, 3, 1, 5, 3, 2, 3], // [              3]
             [2, 3, 1, 2, 6, 1, 2, 3], // [              3]
-            [2, 3, 1, 2, 4, 3, 1, 3], // [            1 3]
+            [2, 3, 1, 2, 4, 3, 1, 3] // [            1 3]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let firstPosition: Tile = new Tile(6, 7);
-        let secondPosition: Tile = new Tile(7, 7);
-
+        const firstPosition: Tile = new Tile(6, 7);
+        const secondPosition: Tile = new Tile(7, 7);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -549,7 +525,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap (private): Swapping two pieces and removing a horizontal chains", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
@@ -557,20 +534,20 @@ describe("GameManager", () => {
             [4, 5, 4, 3, 6, 2, 3, 4], // [               ]
             [4, 1, 3, 1, 5, 3, 2, 2], // [               ]
             [2, 3, 1, 2, 6, 1, 2, 3], // [              3]
-            [2, 3, 1, 2, 4, 1, 1, 1], // [          1 1 1]
+            [2, 3, 1, 2, 4, 1, 1, 1] // [          1 1 1]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let firstPosition: Tile = new Tile(7, 67);
-        let secondPosition: Tile = new Tile(7, 7);
+        const firstPosition: Tile = new Tile(7, 67);
+        const secondPosition: Tile = new Tile(7, 7);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyRemoveAllChains = sinon.spy(gameManager, "removeAllChains");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -580,7 +557,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap (private): Single swap without chains to simulate a RollBack", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [3, 1, 3, 1, 2, 3, 1, 2], // [               ]
             [3, 4, 5, 4, 3, 6, 2, 3], // [               ]
             [1, 4, 1, 3, 1, 5, 3, 2], // [               ]
@@ -588,19 +566,19 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spySwapSelectedPieces = sinon.spy(gameManager, "swapSelectedPieces");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spySwapSelectedPieces = sinon.spy(gameManager, "swapSelectedPieces");
 
         gameManager.nextStep(gameManager);
 
@@ -611,7 +589,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap (private): Swapping two rainbows to RemoveAllPieces", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], // [7 7            ]
             [2, 4, 5, 4, 3, 6, 2, 3], // [               ]
             [1, 4, 1, 3, 1, 5, 3, 2], // [               ]
@@ -619,25 +598,25 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [               ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [               ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [               ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [               ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [               ]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let pieceRainbow1 = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
-        let pieceRainbow2 = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
+        const pieceRainbow1 = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
+        const pieceRainbow2 = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
         gameManager.grid.setPiece(pieceRainbow1);
         gameManager.grid.setPiece(pieceRainbow2);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spyRemoveAllPieces = sinon.spy(gameManager, "removeAllPieces");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spyRemoveAllPieces = sinon.spy(gameManager, "removeAllPieces");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -647,7 +626,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap (private): Swapping two PowerUps to apply the both effects (removePiecesInList)", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], // [C1 R3            ]
             [2, 4, 5, 4, 3, 6, 2, 3], // [                 ]
             [1, 4, 1, 3, 1, 5, 3, 2], // [                 ]
@@ -655,25 +635,25 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], // [                 ]
             [3, 1, 2, 5, 4, 5, 5, 2], // [                 ]
             [1, 2, 3, 1, 2, 3, 1, 2], // [                 ]
-            [2, 3, 1, 2, 3, 1, 2, 3]//   [                 ]
+            [2, 3, 1, 2, 3, 1, 2, 3] //   [                 ]
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let pieceCol = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.COL, PieceIds.BLUE);
-        let pieceRow = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.ROW, PieceIds.ORANGE);
+        const pieceCol = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.COL, PieceIds.BLUE);
+        const pieceRow = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.ROW, PieceIds.ORANGE);
         gameManager.grid.setPiece(pieceCol);
         gameManager.grid.setPiece(pieceRow);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -683,7 +663,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap: Swapping a piece and a RainbowPowerUp (First position) to remove all pieces that color (removePiecesInList)", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], //
             [2, 4, 5, 4, 3, 6, 2, 3], //
             [1, 4, 1, 3, 1, 5, 3, 2], //
@@ -691,23 +672,23 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], //
             [3, 1, 2, 5, 4, 5, 5, 2], //
             [1, 2, 3, 1, 2, 3, 1, 2], //
-            [2, 3, 1, 2, 3, 1, 2, 3]//
+            [2, 3, 1, 2, 3, 1, 2, 3] //
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let pieceRainbow = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
+        const pieceRainbow = PieceUtils.getNewPowerUpPiece(0, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
         gameManager.grid.setPiece(pieceRainbow);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -717,7 +698,8 @@ describe("GameManager", () => {
     });
 
     it("AfterSwap: Swapping a piece and a RainbowPowerUp (Second position) to remove all pieces that color (removePiecesInList)", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], //
             [2, 4, 5, 4, 3, 6, 2, 3], //
             [1, 4, 1, 3, 1, 5, 3, 2], //
@@ -725,23 +707,23 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], //
             [3, 1, 2, 5, 4, 5, 5, 2], //
             [1, 2, 3, 1, 2, 3, 1, 2], //
-            [2, 3, 1, 2, 3, 1, 2, 3]//
+            [2, 3, 1, 2, 3, 1, 2, 3] //
         ];
         GridUtils.generateByMap(gameManager.grid, map);
 
-        let pieceRainbow = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
+        const pieceRainbow = PieceUtils.getNewPowerUpPiece(1, 0, PieceType.RAINBOW, PieceIds.RAINBOW);
         gameManager.grid.setPiece(pieceRainbow);
 
-        let firstPosition: Tile = new Tile(0, 0);
-        let secondPosition: Tile = new Tile(1, 0);
+        const firstPosition: Tile = new Tile(0, 0);
+        const secondPosition: Tile = new Tile(1, 0);
 
         gameManager.swapModel.setPosition(TouchPhase.BEGAN, firstPosition.col, firstPosition.row);
         gameManager.swapModel.setPosition(TouchPhase.ENDED, secondPosition.col, secondPosition.row);
         gameManager.swapModel.status = SwapModel.VALIDATE;
 
-        let spyAfterSwap = sinon.spy(gameManager, "afterSwap");
-        let spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
-        let spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
+        const spyAfterSwap = sinon.spy(gameManager, "afterSwap");
+        const spyRemovePiecesInList = sinon.spy(gameManager, "removePiecesInList");
+        const spySwapPiecesConfirmCommand = sinon.spy(gameManager.gameService, "swapPiecesConfirmCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -751,7 +733,8 @@ describe("GameManager", () => {
     });
 
     it("NexStep: GameOver Process", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 2, 3, 1, 2], //
             [2, 4, 5, 4, 3, 6, 2, 3], //
             [1, 4, 1, 3, 1, 5, 3, 2], //
@@ -759,11 +742,11 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], //
             [3, 1, 2, 5, 4, 5, 5, 2], //
             [1, 2, 3, 1, 2, 3, 1, 2], //
-            [2, 3, 1, 2, 3, 1, 2, 3]//
+            [2, 3, 1, 2, 3, 1, 2, 3] //
         ];
         GridUtils.generateByMap(gameManager.grid, map);
         gameManager.gameStatus.gameOver();
-        let spyGameOverCommand = sinon.spy(gameManager.gameService, "gameOverCommand");
+        const spyGameOverCommand = sinon.spy(gameManager.gameService, "gameOverCommand");
 
         gameManager.nextStep(gameManager);
 
@@ -771,7 +754,8 @@ describe("GameManager", () => {
     });
 
     it("NexStep: GameOver Process => Waiting to remove all chains", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [1, 3, 3, 1, 1, 1, 1, 2], //
             [2, 4, 5, 4, 3, 6, 2, 3], //
             [1, 4, 1, 3, 1, 5, 3, 2], //
@@ -779,17 +763,18 @@ describe("GameManager", () => {
             [2, 3, 1, 2, 3, 4, 2, 3], //
             [3, 1, 2, 5, 4, 5, 5, 2], //
             [1, 2, 3, 1, 2, 3, 1, 2], //
-            [2, 3, 1, 2, 3, 1, 2, 3]//
+            [2, 3, 1, 2, 3, 1, 2, 3] //
         ];
         GridUtils.generateByMap(gameManager.grid, map);
         gameManager.gameStatus.gameOver();
 
-        let spyGameOverCommand = sinon.spy(gameManager.gameService, "gameOverCommand");
+        const spyGameOverCommand = sinon.spy(gameManager.gameService, "gameOverCommand");
 
         gameManager.nextStep(gameManager);
 
         assert.isFalse(spyGameOverCommand.called, "gameOverCommand");
-    }); it("NextStep: FillGrid", () => {
+    });
+    it("NextStep: FillGrid", () => {
         let count = 0;
         while (GridUtils.hasEmptyPiece(gameManager.grid)) {
             count++;
@@ -802,7 +787,8 @@ describe("GameManager", () => {
     });
 
     it("NextStep: Filling the Grid after removing pieces", () => {
-        let map: number[][] = [// -
+        const map: number[][] = [
+            // -
             [4, 2, 3, 1, 2, 3, 1, 2], //
             [1, 4, 4, 4, 3, 4, 2, 3], //
             [1, 1, 1, 3, 1, 6, 3, 2], //

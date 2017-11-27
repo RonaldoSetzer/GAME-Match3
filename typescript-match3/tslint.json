@@ -42,6 +42,7 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
+    "no-implicit-dependencies": false,
     "no-inferrable-types": false,
     "no-shadowed-variable": true,
     "no-string-literal": true,

@@ -1,10 +1,9 @@
-import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
-import { GridData } from "./../../../../src/matchthree/game/models/GridData";
-import { PieceType } from "../../../../src/matchthree/game/utils/PieceType";
 import { assert } from "chai";
 
-describe("Grid", () => {
+import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
+import { GridData } from "./../../../../src/matchthree/game/models/GridData";
 
+describe("Grid", () => {
     let grid: GridData;
 
     beforeEach(() => {
@@ -16,24 +15,24 @@ describe("Grid", () => {
     });
 
     it("Constructor: Default values", () => {
-        let maxCols = 8;
-        let maxRows = 8;
+        const maxCols = 8;
+        const maxRows = 8;
         grid = new GridData();
         assert.equal(maxCols, grid.maxCols);
         assert.equal(maxRows, grid.maxRows);
     });
 
     it("Constructor: Setting new values to col and row", () => {
-        let maxCols = 9;
-        let maxRows = 19;
+        const maxCols = 9;
+        const maxRows = 19;
         grid = new GridData(maxCols, maxRows);
         assert.equal(maxCols, grid.maxCols);
         assert.equal(maxRows, grid.maxRows);
     });
 
     it("GetPiece", () => {
-        let col = 2;
-        let row = 2;
+        const col = 2;
+        const row = 2;
         let piece = new PieceData(col, row);
         grid.setPiece(piece);
         piece = grid.getPiece(col, row);
@@ -42,17 +41,16 @@ describe("Grid", () => {
     });
 
     it("GetPiece: Returns undefined when the values are more than grid size ", () => {
-        let piece = grid.getPiece(60, 60);
+        const piece = grid.getPiece(60, 60);
 
         assert.equal(undefined, piece);
     });
 
     it("SetPiece", () => {
-        let col = 0;
-        let row = 0;
-        let piece = new PieceData(col, row);
+        const col = 0;
+        const row = 0;
+        const piece = new PieceData(col, row);
         grid.setPiece(piece);
         assert.deepEqual(piece, grid.getPiece(col, row));
     });
-
 });

@@ -1,11 +1,11 @@
+import { assert } from "chai";
+
 import { LevelInfo } from "./../../../../src/matchthree/game/models/LevelInfo";
 import { LevelModel } from "./../../../../src/matchthree/game/models/LevelModel";
 import { PieceData } from "./../../../../src/matchthree/game/models/PieceData";
 import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
-import { assert } from "chai";
 
 describe("LevelModel", () => {
-
     let levelModel: LevelModel;
 
     beforeEach(() => {
@@ -37,7 +37,7 @@ describe("LevelModel", () => {
     });
 
     it("Reset: When there is a LevelInfo specified", () => {
-        let levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
+        const levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
         levelModel.levelInfo = levelInfo;
         levelModel.reset();
 
@@ -46,7 +46,7 @@ describe("LevelModel", () => {
     });
 
     it("GetMaxCols/GetMaxRows: When there is a LevelInfo specified", () => {
-        let levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
+        const levelInfo = new LevelInfo(0, 5, 7, LevelInfo.MOVE_TYPE, [4200, 5000, 6000], 10);
         levelModel.levelInfo = levelInfo;
 
         assert.equal(levelInfo.maxCols, levelModel.maxCols);
@@ -54,7 +54,7 @@ describe("LevelModel", () => {
     });
 
     it("AddPiece", () => {
-        let piece: PieceData = new PieceData();
+        const piece: PieceData = new PieceData();
         levelModel.addPiece(piece);
 
         assert.equal(1, levelModel.toAdd.length);
@@ -65,7 +65,7 @@ describe("LevelModel", () => {
     });
 
     it("AddToMoveList", () => {
-        let piece: PieceData = new PieceData();
+        const piece: PieceData = new PieceData();
         levelModel.addToMoveList(piece);
 
         assert.equal(1, levelModel.toMove.length);
@@ -73,7 +73,7 @@ describe("LevelModel", () => {
     });
 
     it("AddToRemoveList", () => {
-        let piece: PieceData = new PieceData();
+        const piece: PieceData = new PieceData();
         levelModel.addToRemoveList(piece);
 
         assert.equal(1, levelModel.toRemove.length);
@@ -81,7 +81,7 @@ describe("LevelModel", () => {
     });
 
     it("RemovePiece", () => {
-        let piece: PieceData = new PieceData();
+        const piece: PieceData = new PieceData();
         levelModel.pieces.push(piece);
 
         levelModel.toAdd.push(piece);

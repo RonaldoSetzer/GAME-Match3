@@ -1,13 +1,12 @@
+import { assert } from "chai";
+import { Sprite, Texture } from "pixi.js";
+
+import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
 import { Tile } from "./../../../../src/matchthree/game/models/Tile";
 import { PieceIds } from "./../../../../src/matchthree/game/utils/PieceIds";
 import { PieceType } from "./../../../../src/matchthree/game/utils/PieceType";
-import { PieceData } from "../../../../src/matchthree/game/models/PieceData";
-import { GridData } from "./../../../../src/matchthree/game/models/GridData";
-import { assert } from "chai";
-import { Texture, Sprite } from "pixi.js";
 
 describe("PieceData", () => {
-
     let piece: PieceData;
 
     beforeEach(() => {
@@ -19,10 +18,10 @@ describe("PieceData", () => {
     });
 
     it("Constructor: Default values", () => {
-        let col = 0;
-        let row = 0;
-        let type = PieceType.EMPTY;
-        let pieceId = PieceIds.EMPTY;
+        const col = 0;
+        const row = 0;
+        const type = PieceType.EMPTY;
+        const pieceId = PieceIds.EMPTY;
 
         assert.equal(col, piece.col);
         assert.equal(row, piece.row);
@@ -31,10 +30,10 @@ describe("PieceData", () => {
     });
 
     it("Constructor: Setting new values", () => {
-        let col = 4;
-        let row = 5;
-        let type = PieceType.NORMAL;
-        let pieceId = PieceIds.BLUE;
+        const col = 4;
+        const row = 5;
+        const type = PieceType.NORMAL;
+        const pieceId = PieceIds.BLUE;
         piece = new PieceData(col, row, type, pieceId);
 
         assert.equal(col, piece.col);
@@ -44,8 +43,8 @@ describe("PieceData", () => {
     });
 
     it("SetPosition: Set the Piece in the position", () => {
-        let col = 4;
-        let row = 6;
+        const col = 4;
+        const row = 6;
         piece = new PieceData(col, row);
         piece.setPosition(col, row);
         assert.equal(col, piece.col);
@@ -56,7 +55,7 @@ describe("PieceData", () => {
         piece.row = 5;
         piece.col = 5;
 
-        let str: String = piece.toString();
+        const str: String = piece.toString();
         assert.equal("piece_id_0_type_empty_col_5_row_5", str);
     });
 
@@ -67,7 +66,7 @@ describe("PieceData", () => {
     });
 
     it("UpdateDisplayPosition: Any", () => {
-        let texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
+        const texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
         piece = new PieceData(5, 6, PieceType.NORMAL, PieceIds.ORANGE);
         piece.display = new Sprite(texture);
         piece.updateDisplayPosition();
@@ -76,7 +75,7 @@ describe("PieceData", () => {
     });
 
     it("UpdateDisplayPosition: Any in the first row", () => {
-        let texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
+        const texture: Texture = Texture.fromImage("./assets/atlas/game/piece_normal_3.png");
         piece = new PieceData(5, 0, PieceType.NORMAL, PieceIds.ORANGE);
         piece.display = new Sprite(texture);
         piece.updateDisplayPosition();
